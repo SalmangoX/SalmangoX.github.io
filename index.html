@@ -26,8 +26,19 @@
 
 <main>
   <div class="hero">
-    <div class="wrap">
-      <h1>Salmango<span class="grad">X</span></h1>
+    <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="wrap hero-in">
+      <svg class="mark" viewBox="0 0 64 64" aria-hidden="true">
+        <defs>
+          <linearGradient id="ma" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B7B4CC"/><stop offset="1" stop-color="#9592B4"/></linearGradient>
+          <linearGradient id="mb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2CFA8"/><stop offset="1" stop-color="#DCD3D2"/></linearGradient>
+        </defs>
+        <circle class="m-b" cx="32" cy="32" r="28" fill="url(#mb)"/>
+        <path class="m-a" d="M32 4 A28 28 0 0 0 32 60 C22 52 22 40 32 32 C42 24 42 12 32 4 Z" fill="url(#ma)"/>
+        <path class="m-s" d="M32 6 C40 13 40 24 32 32 C24 40 24 51 32 58" fill="none" stroke="#FBF7F0" stroke-width="3.2" stroke-linecap="round" pathLength="1"/>
+      </svg>
+      <h1 class="big">Salmango<span class="grad shimmer">X</span></h1>
+      <p class="tag">节律 · 月账本</p>
       <div class="btns">
         <a class="btn primary" href="#products">看看作品</a>
         <a class="btn ghost" href="https://github.com/SalmangoX">
@@ -36,57 +47,94 @@
         </a>
       </div>
     </div>
+    <a class="scroll-cue" href="#products" aria-label="往下看"><span></span></a>
   </div>
 
-  <section id="products">
+  <section id="products" class="showcase">
     <div class="wrap">
-      <div class="sec-h">
-        <div class="eyebrow">Products</div>
-        <h2>作品</h2>
-      </div>
-      <div class="products">
 
-        <article class="pcard cadence">
-          <div class="ptop">
-            <img class="picon" src="img/cadence.png" alt="节律图标" width="64" height="64">
-            <div>
-              <h3>节律 Cadence<span class="ver">1.4.2</span></h3>
-              <div class="sub">带优先级颜色的日历</div>
-            </div>
-          </div>
-          <div class="chips">
-            <span class="chip">网页 PWA</span><span class="chip">iPhone</span><span class="chip">Mac</span><span class="chip">安卓</span>
-          </div>
+      <article class="show cadence spot reveal">
+        <div class="show-text">
+          <img class="picon" src="img/cadence.png" alt="节律图标" width="72" height="72">
+          <h2>节律 <span class="en">Cadence</span></h2>
+          <p class="one">带优先级颜色的日历</p>
+          <div class="chips"><span class="chip">网页 PWA</span><span class="chip">iPhone</span><span class="chip">Mac</span><span class="chip">安卓</span></div>
           <div class="btns">
             <a class="btn tint" href="cadence.html">了解与下载</a>
             <a class="btn ghost" href="https://salmangox.github.io/month-calendar/">打开网页版</a>
           </div>
-        </article>
-
-        <article class="pcard ledger">
-          <div class="ptop">
-            <img class="picon" src="img/ledger.png" alt="月账本图标" width="64" height="64">
-            <div>
-              <h3>月账本<span class="ver">0.24 测试版</span></h3>
-              <div class="sub">每月收支、资产与独秀指数</div>
+        </div>
+        <div class="show-vis" aria-hidden="true">
+          <div class="cal">
+            <div class="cal-h"><span class="pill">2026 年 11 月</span></div>
+            <div class="cal-w"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
+            <div class="cal-g">
+              <span class="cell" style="--i:1"><b>1</b></span>
+              <span class="cell" style="--i:2"><b>2</b></span>
+              <span class="cell" style="--i:3"><b>3</b><i class="ev p1"></i></span>
+              <span class="cell" style="--i:4"><b>4</b></span>
+              <span class="cell today" style="--i:5"><b>5</b><i class="ev p3"></i></span>
+              <span class="cell" style="--i:6"><b>6</b></span>
+              <span class="cell" style="--i:7"><b>7</b></span>
+              <span class="cell" style="--i:8"><b>8</b></span>
+              <span class="cell" style="--i:9"><b>9</b><i class="ev p2"></i></span>
+              <span class="cell" style="--i:10"><b>10</b><i class="ev span p2"></i></span>
+              <span class="cell" style="--i:11"><b>11</b></span>
+              <span class="cell" style="--i:12"><b>12</b></span>
+              <span class="cell" style="--i:13"><b>13</b></span>
+              <span class="cell" style="--i:14"><b>14</b></span>
+              <span class="cell" style="--i:15"><b>15</b></span>
+              <span class="cell" style="--i:16"><b>16</b></span>
+              <span class="cell" style="--i:17"><b>17</b><i class="ev p3"></i></span>
+              <span class="cell" style="--i:18"><b>18</b></span>
+              <span class="cell" style="--i:19"><b>19</b><i class="ev p0"></i></span>
+              <span class="cell" style="--i:20"><b>20</b></span>
+              <span class="cell" style="--i:21"><b>21</b></span>
+              <span class="cell" style="--i:22"><b>22</b></span>
+              <span class="cell" style="--i:23"><b>23</b></span>
+              <span class="cell" style="--i:24"><b>24</b><i class="ev p2"></i></span>
+              <span class="cell" style="--i:25"><b>25</b></span>
+              <span class="cell" style="--i:26"><b>26</b><i class="ev p1"></i></span>
+              <span class="cell" style="--i:27"><b>27</b></span>
+              <span class="cell" style="--i:28"><b>28</b></span>
+              <span class="cell" style="--i:29"><b>29</b></span>
+              <span class="cell" style="--i:30"><b>30</b></span>
+              <span class="cell out" style="--i:31"><b>1</b></span>
+              <span class="cell out" style="--i:32"><b>2</b></span>
+              <span class="cell out" style="--i:33"><b>3</b></span>
+              <span class="cell out" style="--i:34"><b>4</b></span>
+              <span class="cell out" style="--i:35"><b>5</b></span>
             </div>
           </div>
-          <div class="chips">
-            <span class="chip">网页 PWA</span><span class="chip">iPhone / iPad</span><span class="chip">安卓</span><span class="chip">电脑浏览器</span>
-          </div>
+        </div>
+      </article>
+
+      <article class="show ledger spot reveal">
+        <div class="show-text">
+          <img class="picon" src="img/ledger.png" alt="月账本图标" width="72" height="72">
+          <h2>月账本</h2>
+          <p class="one">每月收支、资产与独秀指数</p>
+          <div class="chips"><span class="chip">网页 PWA</span><span class="chip">iPhone / iPad</span><span class="chip">安卓</span><span class="chip">电脑浏览器</span></div>
           <div class="btns">
             <a class="btn tint" href="ledger.html">了解更多</a>
             <a class="btn ghost" href="https://salmangox.github.io/ledger/">打开月账本</a>
           </div>
-        </article>
+        </div>
+        <div class="show-vis" aria-hidden="true">
+          <div class="chart">
+            <i class="ring"></i>
+            <div class="bars"><i style="--h:34%;--i:0"></i><i style="--h:52%;--i:1"></i><i style="--h:68%;--i:2"></i><i style="--h:88%;--i:3"></i></div>
+            <i class="base"></i>
+          </div>
+        </div>
+      </article>
 
-      </div>
     </div>
   </section>
 
   <section>
     <div class="wrap">
-      <div class="box">
+      <div class="box reveal">
         <h3>链接</h3>
         <div class="links">
           <a href="https://github.com/SalmangoX">GitHub<span>@SalmangoX</span></a>

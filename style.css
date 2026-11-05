@@ -201,3 +201,135 @@ footer a:hover{color:var(--ink)}
 .theme:hover{color:var(--ink);border-color:var(--line2)}
 .pcard .chips{margin-top:18px}
 .hero h1{margin-bottom:0}
+
+/* ================= 动效与展示（首页大标题、产品展示、滚动渐显） ================= */
+:root{--ease:cubic-bezier(.2,.75,.2,1);--brand-grad:linear-gradient(135deg,#E2B562 6%,#74A8E6 52%,#5A8DDA 96%)}
+
+/* 顶栏：页面最上面时透明，往下滚才出现毛玻璃 */
+header{transition:background .3s,border-color .3s}
+html.js:not(.scrolled) header{background:transparent;border-color:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+
+/* 大标题 */
+.hero{min-height:calc(100svh - 60px);display:grid;place-items:center;padding:40px 0 90px;text-align:center;isolation:isolate}
+.hero::before{display:none}
+.hero-in{display:flex;flex-direction:column;align-items:center}
+.aurora{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.aurora span{position:absolute;width:56vmax;height:56vmax;border-radius:50%;filter:blur(70px);opacity:.5;mix-blend-mode:normal;
+  animation:drift 22s ease-in-out infinite alternate}
+.aurora span:nth-child(1){background:var(--a1);left:-14vmax;top:-18vmax}
+.aurora span:nth-child(2){background:var(--a2);right:-16vmax;top:-10vmax;animation-duration:26s;animation-delay:-6s}
+.aurora span:nth-child(3){background:var(--sky);left:20vmax;bottom:-34vmax;opacity:.22;animation-duration:30s;animation-delay:-12s}
+.aurora::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 55%,var(--bg))}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(6vmax,4vmax) scale(1.12)}100%{transform:translate(-4vmax,7vmax) scale(.94)}}
+:root[data-theme="dark"] .aurora span{opacity:.32}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .aurora span{opacity:.32}}
+
+.mark{width:96px;height:96px;margin-bottom:28px;filter:drop-shadow(0 12px 30px rgba(120,110,160,.28))}
+.mark .m-b{transform-origin:32px 32px;animation:pop 1s var(--ease) both}
+.mark .m-a{transform-origin:32px 32px;animation:spinIn 1.3s var(--ease) .15s both}
+.mark .m-s{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.1s var(--ease) .55s forwards}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+@keyframes spinIn{from{transform:rotate(-140deg) scale(.6);opacity:0}to{transform:none;opacity:1}}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+.hero h1.big{font-size:clamp(60px,13vw,150px);line-height:1;letter-spacing:-.045em;font-weight:760;margin:0;
+  animation:rise 1.1s var(--ease) .25s both}
+.shimmer{background-image:linear-gradient(100deg,var(--a1) 0%,var(--a2) 30%,#74A8E6 55%,var(--a1) 80%,var(--a2) 100%);
+  background-size:250% 100%;animation:shine 7s linear infinite}
+@keyframes shine{to{background-position:-250% 0}}
+.hero .tag{margin-top:22px;font-size:clamp(15px,2vw,18px);letter-spacing:.32em;color:var(--sub);padding-left:.32em;
+  animation:rise 1s var(--ease) .45s both}
+.hero .btns{justify-content:center;margin-top:36px;animation:rise 1s var(--ease) .6s both}
+@keyframes rise{from{opacity:0;transform:translateY(26px);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+
+.scroll-cue{position:absolute;left:50%;bottom:28px;width:26px;height:42px;margin-left:-13px;border-radius:14px;
+  border:1.5px solid var(--line2);animation:rise 1s var(--ease) 1s both}
+.scroll-cue span{position:absolute;left:50%;top:8px;width:4px;height:8px;margin-left:-2px;border-radius:2px;background:var(--sub);
+  animation:cue 1.8s ease-in-out infinite}
+@keyframes cue{0%{opacity:0;transform:translateY(-2px)}30%{opacity:1}80%{opacity:0;transform:translateY(14px)}100%{opacity:0}}
+@media (max-height:620px){.scroll-cue{display:none}}
+
+/* 产品展示：大块面板 */
+.showcase{padding:20px 0 30px}
+.show{position:relative;display:grid;grid-template-columns:1fr 1.05fr;align-items:center;gap:40px;min-height:520px;
+  padding:56px;margin-bottom:24px;border-radius:36px;overflow:hidden;isolation:isolate;
+  background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow)}
+.show.cadence{--pc:var(--sky);background:linear-gradient(150deg,color-mix(in oklab,var(--a1) 14%,var(--card)),var(--card) 45%,color-mix(in oklab,var(--a2) 20%,var(--card)))}
+.show.ledger{--pc:#2F8F66;background:linear-gradient(150deg,color-mix(in oklab,var(--lg-green) 12%,var(--card)),var(--card) 50%,color-mix(in oklab,var(--lg-gold) 14%,var(--card)))}
+:root[data-theme="dark"] .show.ledger{--pc:var(--lg-green)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .show.ledger{--pc:var(--lg-green)}}
+.show-text .picon{width:72px;height:72px;border-radius:17px;margin-bottom:22px}
+.show h2{font-size:clamp(38px,5.4vw,60px);line-height:1.05;letter-spacing:-.03em;font-weight:740}
+.show h2 .en{font-weight:500;color:var(--faint);letter-spacing:-.02em}
+.show .one{font-size:clamp(17px,2vw,21px);color:var(--sub);margin:14px 0 22px}
+.show .chips{margin-bottom:28px}
+@media (max-width:860px){
+  .show{grid-template-columns:1fr;padding:36px 26px 30px;min-height:0;gap:34px;border-radius:30px}
+  .show-vis{order:2}
+}
+
+/* 跟随鼠标的光晕（只在能悬停的设备上） */
+.spot::before{content:"";position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity .4s;pointer-events:none;
+  background:radial-gradient(520px circle at var(--mx,50%) var(--my,50%),color-mix(in oklab,var(--pc) 16%,transparent),transparent 60%)}
+@media (hover:hover){.spot:hover::before{opacity:1}}
+
+/* 示意：节律的月历 */
+.show-vis{display:grid;place-items:center;perspective:1400px}
+.cal{width:100%;max-width:440px;background:var(--bg);border:1px solid var(--line);border-radius:28px;padding:16px 14px 18px;
+  box-shadow:0 30px 60px -20px rgba(40,30,70,.25),0 2px 6px rgba(0,0,0,.04);
+  transform:rotateX(14deg) rotateY(-16deg) rotateZ(2deg) scale(.94);transition:transform 1.4s var(--ease)}
+.show.in .cal{transform:rotateX(4deg) rotateY(-6deg)}
+@media (hover:hover){.show.cadence:hover .cal{transform:none}}
+.cal-h{display:flex;justify-content:center;margin-bottom:8px}
+.pill{font-size:13px;font-weight:650;padding:6px 14px;border-radius:999px;background:color-mix(in oklab,var(--card) 80%,transparent);
+  border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
+.cal-w,.cal-g{display:grid;grid-template-columns:repeat(7,1fr)}
+.cal-w span{text-align:center;font-size:11px;color:var(--faint);padding:4px 0 6px}
+.cal-g{gap:4px 0}
+.cell{position:relative;height:52px;border-top:1px solid var(--line);padding-top:4px;text-align:center;font-size:12px;color:var(--ink)}
+.cell b{font-weight:550;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%}
+.cell.out{color:var(--faint)}
+.cell.today b{background:var(--brand-grad);color:#fff;box-shadow:0 4px 12px rgba(226,181,98,.4)}
+.ev{position:absolute;left:4px;right:4px;bottom:9px;height:6px;border-radius:3px;transform:scaleX(0);transform-origin:left;
+  transition:transform .7s var(--ease);transition-delay:calc(var(--i) * 28ms + .3s)}
+.ev.span{right:calc(-200% + 4px)}
+.ev.p0{background:var(--p0)}.ev.p1{background:var(--p1)}.ev.p2{background:var(--p2)}.ev.p3{background:var(--p3)}
+.show.in .ev{transform:none}
+
+/* 示意：月账本的柱状图 */
+.chart{position:relative;width:100%;max-width:380px;aspect-ratio:1;border-radius:34px;background:var(--lg-deep);overflow:hidden;
+  box-shadow:0 30px 60px -20px rgba(10,40,30,.45);transform:scale(.92) rotate(-3deg);transition:transform 1.4s var(--ease)}
+.show.in .chart{transform:none}
+.chart .ring{position:absolute;right:-8%;top:-8%;width:48%;aspect-ratio:1;border-radius:50%;border:clamp(16px,4.6vw,24px) solid var(--lg-gold);
+  transform:scale(0) rotate(-90deg);transition:transform 1.2s var(--ease) .2s}
+.show.in .chart .ring{transform:none}
+.chart .bars{position:absolute;left:18%;right:22%;bottom:20%;top:22%;display:flex;align-items:flex-end;gap:7%}
+.chart .bars i{flex:1;height:var(--h);border-radius:12px;background:var(--lg-green);transform:scaleY(0);transform-origin:bottom;
+  transition:transform 1s var(--ease);transition-delay:calc(var(--i) * 120ms + .35s)}
+.chart .bars i:nth-child(even){background:var(--lg-pink)}
+.show.in .chart .bars i{transform:none}
+.chart .base{position:absolute;left:16%;right:16%;bottom:15%;height:3.5%;border-radius:99px;background:#E4EFEA}
+@media (hover:hover){.show.ledger:hover .chart .bars i{animation:bob 1.6s ease-in-out infinite;animation-delay:calc(var(--i) * 140ms)}}
+@keyframes bob{50%{transform:scaleY(.9)}}
+
+/* 滚动渐显（没有 JS 时直接显示） */
+html.js .reveal{opacity:0;transform:translateY(36px) scale(.985);transition:opacity 1s var(--ease),transform 1s var(--ease);
+  transition-delay:var(--d,0s)}
+html.js .reveal.in{opacity:1;transform:none}
+
+/* 卡片悬停轻微上浮 */
+.feat,.plat{transition:transform .35s var(--ease),border-color .35s,box-shadow .35s}
+@media (hover:hover){.feat:hover,.plat:hover{transform:translateY(-3px);border-color:var(--line2);box-shadow:var(--shadow)}}
+
+/* 产品页标题也有入场动画 */
+.phero .ptop,.phero .lead,.phero .btns{animation:rise 1s var(--ease) both}
+.phero .lead{animation-delay:.12s}.phero .btns{animation-delay:.22s}
+.phero .picon{animation:pop 1s var(--ease) both}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html.js .reveal{opacity:1;transform:none}
+  .ev,.chart .bars i,.chart .ring{transform:none}
+  .cal,.chart{transform:none}
+  .mark .m-s{stroke-dashoffset:0}
+}
