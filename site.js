@@ -51,7 +51,7 @@
     [].forEach.call(document.querySelectorAll('.show'), function (card) {
       var up = function () { card.classList.remove('pressed'); };
       card.addEventListener('pointerdown', function (e) {
-        if (reduce) return;
+        if (reduce || e.target.closest('.badge')) return;     // 按在效果图上是要拖卡片，不触发卡片的点按效果
         var r = card.getBoundingClientRect();
         var dot = document.createElement('span');
         dot.className = 'ripple';
@@ -59,7 +59,7 @@
         dot.style.top = (e.clientY - r.top) + 'px';
         card.appendChild(dot);
         setTimeout(function () { dot.remove(); }, 950);
-        if (!e.target.closest('.badge')) card.classList.add('pressed');
+        card.classList.add('pressed');
       });
       ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (t) { card.addEventListener(t, up); });
     });
