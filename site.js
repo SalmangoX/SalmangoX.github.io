@@ -45,6 +45,66 @@
       els.forEach(function (el) { io.observe(el); });
     } else els.forEach(show);
 
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // 产品卡片：点按漾光 + 微微下沉
+    [].forEach.call(document.querySelectorAll('.show'), function (card) {
+      var up = function () { card.classList.remove('pressed'); };
+      card.addEventListener('pointerdown', function (e) {
+        if (reduce) return;
+        var r = card.getBoundingClientRect();
+        var dot = document.createElement('span');
+        dot.className = 'ripple';
+        dot.style.left = (e.clientX - r.left) + 'px';
+        dot.style.top = (e.clientY - r.top) + 'px';
+        card.appendChild(dot);
+        setTimeout(function () { dot.remove(); }, 950);
+        if (!e.target.closest('.badge')) card.classList.add('pressed');
+      });
+      ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (t) { card.addEventListener(t, up); });
+    });
+
+    // 徽章卡片：按住拖动时跟着倾斜，鼠标悬停时轻轻跟随，松手回弹
+    if (!reduce) [].forEach.call(document.querySelectorAll('.cal, .lg-app'), function (el) {
+      el.classList.add('badge');
+      var drag = false, sx = 0, sy = 0;
+      var clamp = function (v, m) { return Math.max(-m, Math.min(m, v)); };
+      var set = function (rx, ry, tx, ty, s, gx, gy, go) {
+        el.style.setProperty('--drx', rx + 'deg'); el.style.setProperty('--dry', ry + 'deg');
+        el.style.setProperty('--dtx', tx + 'px'); el.style.setProperty('--dty', ty + 'px');
+        el.style.setProperty('--ds', s);
+        el.style.setProperty('--gx', gx + '%'); el.style.setProperty('--gy', gy + '%'); el.style.setProperty('--go', go);
+      };
+      var reset = function () {
+        drag = false;
+        el.classList.remove('dragging', 'hovering');
+        el.classList.add('release');
+        set(0, 0, 0, 0, 1, 30, 0, 0);
+      };
+      el.addEventListener('pointerdown', function (e) {
+        if (e.button > 0) return;
+        drag = true; sx = e.clientX; sy = e.clientY;
+        try { el.setPointerCapture(e.pointerId); } catch (_) {}
+        el.classList.remove('release', 'hovering');
+        el.classList.add('dragging');
+      });
+      el.addEventListener('pointermove', function (e) {
+        if (drag) {
+          var dx = e.clientX - sx, dy = e.clientY - sy;
+          set(clamp(-dy * 0.14, 16), clamp(dx * 0.14, 18), clamp(dx * 0.08, 14), clamp(dy * 0.08, 12), 1.03,
+              50 + clamp(dx * 0.35, 45), 15 + clamp(dy * 0.35, 40), 0.9);
+        } else if (e.pointerType === 'mouse') {
+          var r = el.getBoundingClientRect();
+          var px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
+          el.classList.remove('release');
+          el.classList.add('hovering');
+          set(-py * 9, px * 11, 0, 0, 1.015, 50 + px * 80, 10 + py * 70, 0.6);
+        }
+      });
+      ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(function (t) { el.addEventListener(t, function () { if (drag) reset(); }); });
+      el.addEventListener('pointerleave', function (e) { if (!drag && e.pointerType === 'mouse') reset(); });
+    });
+
     // 跟随鼠标的光晕
     [].forEach.call(document.querySelectorAll('.spot'), function (el) {
       el.addEventListener('pointermove', function (e) {

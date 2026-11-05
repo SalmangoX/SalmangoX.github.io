@@ -273,8 +273,7 @@ html.js:not(.scrolled) header{background:transparent;border-color:transparent;-w
 .cal{width:100%;max-width:440px;background:var(--bg);border:1px solid var(--line);border-radius:28px;padding:16px 14px 18px;
   box-shadow:0 30px 60px -20px rgba(40,30,70,.25),0 2px 6px rgba(0,0,0,.04);
   transform:rotateX(14deg) rotateY(-16deg) rotateZ(2deg) scale(.94);transition:transform 1.4s var(--ease)}
-.show.in .cal{transform:rotateX(4deg) rotateY(-6deg)}
-@media (hover:hover){.show.cadence:hover .cal{transform:none}}
+.show.in .cal{transform:rotateX(calc(4deg + var(--drx,0deg))) rotateY(calc(-6deg + var(--dry,0deg))) translate3d(var(--dtx,0px),var(--dty,0px),0) scale(var(--ds,1))}
 .cal-h{display:flex;justify-content:center;margin-bottom:8px}
 .pill{font-size:13px;font-weight:650;padding:6px 14px;border-radius:999px;background:color-mix(in oklab,var(--card) 80%,transparent);
   border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
@@ -301,8 +300,7 @@ html.js:not(.scrolled) header{background:transparent;border-color:transparent;-w
   transform:rotateX(12deg) rotateY(14deg) rotateZ(-2deg) scale(.94);transition:transform 1.4s var(--ease)}
 :root[data-theme="dark"] .lg-app{--l-bg:#0A0A0B;--l-paper:#161618;--l-ink:#ECEDEE;--l-muted:#9A9DA2;--l-line:#2B2C2F;--l-hero:#12302A;--l-mark:#E9C25B;--l-inc:#63C79A;--l-exp:#E08AAE}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .lg-app{--l-bg:#0A0A0B;--l-paper:#161618;--l-ink:#ECEDEE;--l-muted:#9A9DA2;--l-line:#2B2C2F;--l-hero:#12302A;--l-mark:#E9C25B;--l-inc:#63C79A;--l-exp:#E08AAE}}
-.show.in .lg-app{transform:rotateX(4deg) rotateY(6deg)}
-@media (hover:hover){.show.ledger:hover .lg-app{transform:none}}
+.show.in .lg-app{transform:rotateX(calc(4deg + var(--drx,0deg))) rotateY(calc(6deg + var(--dry,0deg))) translate3d(var(--dtx,0px),var(--dty,0px),0) scale(var(--ds,1))}
 .lg-top{display:flex;justify-content:space-between;align-items:center;padding:2px 6px 12px;font-size:14px}
 .lg-top b{font-weight:700}
 .lg-top span{font-size:12px;font-weight:600;background:var(--l-paper);border:1px solid var(--l-line);border-radius:10px;padding:3px 9px}
@@ -335,6 +333,27 @@ html.js:not(.scrolled) header{background:transparent;border-color:transparent;-w
 .lg-bars .exp{transition-delay:calc(var(--i) * 90ms + .5s)}
 .show.in .lg-bars i{transform:none}
 
+/* 徽章卡片：两张效果图可以按住拖动，跟着手指 / 鼠标在 3D 里倾斜，表面一道高光随角度移动，松手回弹 */
+.badge{position:relative;cursor:grab;-webkit-user-select:none;user-select:none;touch-action:pan-y;-webkit-tap-highlight-color:transparent}
+.badge.dragging{cursor:grabbing;transition:transform .08s linear!important}
+.badge.hovering{transition:transform .35s var(--ease)!important}
+.badge.release{transition:transform .95s cubic-bezier(.18,1.55,.35,1)!important}
+.badge::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:3;
+  background:radial-gradient(90% 70% at var(--gx,30%) var(--gy,0%),rgba(255,255,255,.55),rgba(255,255,255,0) 55%),
+             linear-gradient(115deg,transparent calc(var(--gx,30%) - 22%),rgba(255,255,255,.22) var(--gx,30%),transparent calc(var(--gx,30%) + 22%));
+  mix-blend-mode:soft-light;opacity:var(--go,0);transition:opacity .45s var(--ease)}
+:root[data-theme="dark"] .badge::after{mix-blend-mode:overlay}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .badge::after{mix-blend-mode:overlay}}
+.badge.dragging::after,.badge.hovering::after{transition:opacity .2s}
+
+/* 产品卡片：点按时从手指位置漾开一圈主色的光，卡片微微下沉（手机上没有鼠标光晕，用它做反馈） */
+.show{transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+.show.pressed{transform:scale(.985)}
+.ripple{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;pointer-events:none;z-index:-1;
+  background:radial-gradient(circle,color-mix(in oklab,var(--pc) 32%,transparent) 0%,color-mix(in oklab,var(--pc) 12%,transparent) 45%,transparent 70%);
+  transform:scale(0);animation:ripple .9s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes ripple{40%{opacity:1}to{transform:scale(14);opacity:0}}
+
 /* 滚动渐显（没有 JS 时直接显示） */
 html.js .reveal{opacity:0;transform:translateY(36px) scale(.985);transition:opacity 1s var(--ease),transform 1s var(--ease);
   transition-delay:var(--d,0s)}
@@ -353,5 +372,6 @@ html.js .reveal.in{opacity:1;transform:none}
   *,*::before,*::after{animation:none!important;transition:none!important}
   html.js .reveal{opacity:1;transform:none}
   .ev,.lg-bars i,.lg-ring{transform:none}
-  .cal,.lg-app{transform:none}
+  .cal,.lg-app{transform:none!important}
+  .ripple{display:none}
 }
