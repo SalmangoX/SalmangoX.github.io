@@ -354,6 +354,14 @@ html.js:not(.scrolled) header{background:transparent;border-color:transparent;-w
   transform:scale(0);animation:ripple .9s cubic-bezier(.2,.7,.3,1) forwards}
 @keyframes ripple{40%{opacity:1}to{transform:scale(14);opacity:0}}
 
+/* 网站更新提示 */
+.update-toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));z-index:50;transform:translate(-50%,24px);opacity:0;
+  border:1px solid var(--line);background:var(--hdr);color:var(--ink);font:inherit;font-size:14px;font-weight:600;
+  padding:12px 20px;border-radius:999px;cursor:pointer;box-shadow:var(--shadow);
+  -webkit-backdrop-filter:saturate(1.6) blur(16px);backdrop-filter:saturate(1.6) blur(16px);
+  transition:transform .5s var(--ease),opacity .5s var(--ease)}
+.update-toast.show{transform:translate(-50%,0);opacity:1}
+
 /* 滚动渐显（没有 JS 时直接显示） */
 html.js .reveal{opacity:0;transform:translateY(36px) scale(.985);transition:opacity 1s var(--ease),transform 1s var(--ease);
   transition-delay:var(--d,0s)}

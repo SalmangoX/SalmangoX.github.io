@@ -105,6 +105,36 @@
       el.addEventListener('pointerleave', function (e) { if (!drag && e.pointerType === 'mouse') reset(); });
     });
 
+    // 自动检查更新：打开页面、从后台切回来时，跳过缓存取一次最新页面，比对 <meta name="sx-build">。
+    // 刚打开还没开始浏览：直接刷新；已经在看了：底部弹一个小提示，点一下再刷新。
+    var meta = document.querySelector('meta[name="sx-build"]');
+    var opened = Date.now(), busy = false;
+    function toast() {
+      if (document.getElementById('sxUpdate')) return;
+      var b = document.createElement('button');
+      b.id = 'sxUpdate'; b.type = 'button'; b.className = 'update-toast';
+      b.textContent = '网站已更新 · 点此刷新';
+      b.addEventListener('click', function () { location.reload(); });
+      document.body.appendChild(b);
+      requestAnimationFrame(function () { b.classList.add('show'); });
+    }
+    window.sxCheckUpdate = function () {
+      if (!meta || busy || !window.fetch) return;
+      busy = true;
+      fetch(location.pathname, { cache: 'reload' })          // 走网络并顺便更新浏览器缓存，之后刷新拿到的就是新页面
+        .then(function (r) { return r.ok ? r.text() : ''; })
+        .then(function (html) {
+          var m = html.match(/<meta name="sx-build" content="(\d+)">/);
+          if (!m || m[1] === meta.content) return;
+          if (Date.now() - opened < 8000 && scrollY < 80) location.reload();
+          else toast();
+        })
+        .catch(function () {})
+        .then(function () { busy = false; });
+    };
+    setTimeout(window.sxCheckUpdate, 600);
+    document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') window.sxCheckUpdate(); });
+
     // 跟随鼠标的光晕
     [].forEach.call(document.querySelectorAll('.spot'), function (el) {
       el.addEventListener('pointermove', function (e) {
