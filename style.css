@@ -49,6 +49,7 @@ header{position:sticky;top:0;z-index:10;background:var(--hdr);border-bottom:1px 
 .bar{display:flex;align-items:center;gap:6px;height:60px}
 .brand{display:flex;align-items:center;gap:10px;font-weight:680;letter-spacing:.01em;margin-right:auto;padding:8px 0}
 .brand svg{width:28px;height:28px;flex:none}
+.brand img{width:26px;height:26px;flex:none;display:block}
 .nav a{font-size:14.5px;color:var(--sub);padding:10px 12px;border-radius:10px}
 .nav a:hover,.nav a[aria-current]{color:var(--ink)}
 .nav a[aria-current]{font-weight:600}
@@ -129,13 +130,13 @@ section{padding:40px 0}
 .links a:hover{color:var(--pc-ink)}
 
 /* 产品页 */
-.phero{padding:64px 0 36px}
+.phero{padding-top:64px;padding-bottom:36px}
 .phero .ptop{gap:20px}
 .phero .picon{width:92px;height:92px;border-radius:22px}
 .phero h1{font-size:clamp(32px,5.6vw,48px);font-weight:720}
 .phero h1 small{display:block;font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--faint);font-weight:600;margin-top:4px}
 .phero .lead{color:var(--sub);font-size:17px;max-width:640px;margin:22px 0 26px}
-@media (max-width:560px){.phero{padding:40px 0 24px}.phero .picon{width:72px;height:72px;border-radius:17px}}
+@media (max-width:560px){.phero{padding-top:40px;padding-bottom:24px}.phero .picon{width:72px;height:72px;border-radius:17px}}
 .page-cadence{--pc:var(--sky);--pc-ink:var(--sky-ink)}
 .page-ledger{--pc:#2F8F66;--pc-ink:#2F8F66}
 :root[data-theme="dark"] .page-ledger{--pc:var(--lg-green);--pc-ink:var(--lg-green)}
