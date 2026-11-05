@@ -290,21 +290,49 @@ html.js:not(.scrolled) header{background:transparent;border-color:transparent;-w
 .ev.p0{background:var(--p0)}.ev.p1{background:var(--p1)}.ev.p2{background:var(--p2)}.ev.p3{background:var(--p3)}
 .show.in .ev{transform:none}
 
-/* 示意：月账本的柱状图 */
-.chart{position:relative;width:100%;max-width:380px;aspect-ratio:1;border-radius:34px;background:var(--lg-deep);overflow:hidden;
-  box-shadow:0 30px 60px -20px rgba(10,40,30,.45);transform:scale(.92) rotate(-3deg);transition:transform 1.4s var(--ease)}
-.show.in .chart{transform:none}
-.chart .ring{position:absolute;right:-8%;top:-8%;width:48%;aspect-ratio:1;border-radius:50%;border:clamp(16px,4.6vw,24px) solid var(--lg-gold);
-  transform:scale(0) rotate(-90deg);transition:transform 1.2s var(--ease) .2s}
-.show.in .chart .ring{transform:none}
-.chart .bars{position:absolute;left:18%;right:22%;bottom:20%;top:22%;display:flex;align-items:flex-end;gap:7%}
-.chart .bars i{flex:1;height:var(--h);border-radius:12px;background:var(--lg-green);transform:scaleY(0);transform-origin:bottom;
-  transition:transform 1s var(--ease);transition-delay:calc(var(--i) * 120ms + .35s)}
-.chart .bars i:nth-child(even){background:var(--lg-pink)}
-.show.in .chart .bars i{transform:none}
-.chart .base{position:absolute;left:16%;right:16%;bottom:15%;height:3.5%;border-radius:99px;background:#E4EFEA}
-@media (hover:hover){.show.ledger:hover .chart .bars i{animation:bob 1.6s ease-in-out infinite;animation-delay:calc(var(--i) * 140ms)}}
-@keyframes bob{50%{transform:scaleY(.9)}}
+/* 示意：月账本的 App 界面（配色、字体、结构取自月账本本身，数字为示意） */
+.lg-app{--l-bg:#E9EFEC;--l-paper:#F8FBF9;--l-ink:#14302A;--l-muted:#5E7770;--l-line:#CFDBD6;--l-hero:#14302A;--l-hero-ink:#EDF3F0;
+  --l-mark:#E0B23A;--l-inc:#2E7A58;--l-exp:#8A3A5C;
+  width:100%;max-width:340px;background:var(--l-bg);color:var(--l-ink);border-radius:34px;padding:16px 14px 18px;
+  border:1px solid color-mix(in oklab,var(--l-line) 70%,transparent);
+  box-shadow:0 30px 60px -20px rgba(10,40,30,.35),0 2px 6px rgba(0,0,0,.04);
+  font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  transform:rotateX(12deg) rotateY(14deg) rotateZ(-2deg) scale(.94);transition:transform 1.4s var(--ease)}
+:root[data-theme="dark"] .lg-app{--l-bg:#0A0A0B;--l-paper:#161618;--l-ink:#ECEDEE;--l-muted:#9A9DA2;--l-line:#2B2C2F;--l-hero:#12302A;--l-mark:#E9C25B;--l-inc:#63C79A;--l-exp:#E08AAE}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .lg-app{--l-bg:#0A0A0B;--l-paper:#161618;--l-ink:#ECEDEE;--l-muted:#9A9DA2;--l-line:#2B2C2F;--l-hero:#12302A;--l-mark:#E9C25B;--l-inc:#63C79A;--l-exp:#E08AAE}}
+.show.in .lg-app{transform:rotateX(4deg) rotateY(6deg)}
+@media (hover:hover){.show.ledger:hover .lg-app{transform:none}}
+.lg-top{display:flex;justify-content:space-between;align-items:center;padding:2px 6px 12px;font-size:14px}
+.lg-top b{font-weight:700}
+.lg-top span{font-size:12px;font-weight:600;background:var(--l-paper);border:1px solid var(--l-line);border-radius:10px;padding:3px 9px}
+.lg-hero{position:relative;overflow:hidden;background:var(--l-hero);color:var(--l-hero-ink);border-radius:20px;padding:16px 16px 14px}
+.lg-ring{position:absolute;right:-26px;top:-26px;width:88px;height:88px;border-radius:50%;border:13px solid var(--l-mark);
+  transform:scale(0) rotate(-90deg);transition:transform 1.2s var(--ease) .25s}
+.show.in .lg-ring{transform:none}
+.lg-cap{font-size:11.5px;opacity:.75}
+.lg-num{font-family:"Noto Serif SC","Songti SC",serif;font-size:34px;font-weight:700;line-height:1.25;margin:2px 0 10px;letter-spacing:.01em}
+.lg-num::before{content:"¥";font-size:.55em;margin-right:4px;opacity:.85}
+.lg-kv{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.lg-kv span{display:block;font-size:10.5px;opacity:.7}
+.lg-kv b{font-size:13.5px;font-weight:650}
+.lg-seg{display:flex;gap:2px;margin:12px 0 10px;background:var(--l-paper);border:1px solid var(--l-line);border-radius:12px;padding:3px}
+.lg-seg span{flex:1;text-align:center;font-size:11px;padding:5px 0;border-radius:9px;color:var(--l-muted);white-space:nowrap}
+.lg-seg .on{background:var(--l-hero);color:var(--l-hero-ink);font-weight:650}
+.lg-legend{display:flex;gap:10px;font-size:10.5px;color:var(--l-muted);padding:0 4px 6px}
+.lg-legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.lg-legend .inc,.lg-bars .inc{background:var(--l-inc)}
+.lg-legend .exp,.lg-bars .exp{background:var(--l-exp)}
+.lg-legend .r{margin-left:auto}
+.lg-rows{background:var(--l-paper);border:1px solid var(--l-line);border-radius:14px;overflow:hidden}
+.lg-row{display:grid;grid-template-columns:34px 1fr 50px;align-items:center;gap:8px;padding:8px 10px;font-size:12px}
+.lg-row+.lg-row{border-top:1px solid var(--l-line)}
+.lg-row b{font-weight:650}
+.lg-row em{font-style:normal;text-align:right;font-weight:650;color:var(--l-inc);font-size:11.5px}
+.lg-bars{display:grid;gap:3px}
+.lg-bars i{display:block;height:5px;border-radius:3px;width:var(--w);transform:scaleX(0);transform-origin:left;
+  transition:transform .9s var(--ease);transition-delay:calc(var(--i) * 90ms + .4s)}
+.lg-bars .exp{transition-delay:calc(var(--i) * 90ms + .5s)}
+.show.in .lg-bars i{transform:none}
 
 /* 滚动渐显（没有 JS 时直接显示） */
 html.js .reveal{opacity:0;transform:translateY(36px) scale(.985);transition:opacity 1s var(--ease),transform 1s var(--ease);
@@ -323,6 +351,6 @@ html.js .reveal.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
   html.js .reveal{opacity:1;transform:none}
-  .ev,.chart .bars i,.chart .ring{transform:none}
-  .cal,.chart{transform:none}
+  .ev,.lg-bars i,.lg-ring{transform:none}
+  .cal,.lg-app{transform:none}
 }
