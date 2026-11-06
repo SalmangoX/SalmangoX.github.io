@@ -1,14 +1,17 @@
 {
   "schema": 1,
-  "updated": "2026-11-05",
+  "updated": "2026-11-06",
   "apps": {
     "cadence": {
       "name": "节律 Cadence",
       "version": "1.4.2",
       "page": "https://salmangox.github.io/cadence.html",
-      "web": { "url": "https://salmangox.github.io/month-calendar/" },
+      "web": {
+        "url": "https://salmangox.github.io/month-calendar/"
+      },
       "android": {
-        "url": "https://github.com/SalmangoX/month-calendar/releases/latest",
+        "url": "https://github.com/SalmangoX/month-calendar/releases/latest/download/month-calendar.apk",
+        "releases": "https://github.com/SalmangoX/month-calendar/releases/latest",
         "asset": "month-calendar.apk"
       },
       "ios": {
@@ -19,8 +22,8 @@
         "ipa": "https://cdn.jsdelivr.net/gh/SalmangoX/month-calendar@dist-ios/Cadence.ipa"
       },
       "mac": {
-        "version": "1.4.0",
-        "build": 46,
+        "version": "1.4.2",
+        "build": 97,
         "minOS": "14.0",
         "dmg": "https://cdn.jsdelivr.net/gh/SalmangoX/month-calendar@dist/Cadence.dmg"
       }
@@ -29,7 +32,9 @@
       "name": "月账本",
       "version": "0.24",
       "page": "https://salmangox.github.io/ledger.html",
-      "web": { "url": "https://salmangox.github.io/ledger/" }
+      "web": {
+        "url": "https://salmangox.github.io/ledger/"
+      }
     }
   }
 }
