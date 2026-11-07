@@ -436,7 +436,7 @@ html.js .bx.reveal:not(.in) .ill .w,html.js .bx.reveal:not(.in) .ill .src span{o
 
 /* 1 三种视图 */
 .ill-views{display:flex;align-items:center;justify-content:center;gap:0}
-.mini{width:150px;height:132px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px;
+.mini{overflow:hidden;width:150px;height:132px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px;
   box-shadow:0 10px 24px -12px rgba(30,20,60,.25);margin:0 -10px}
 .mini b{display:block;font-size:11px;font-weight:700;margin-bottom:7px}
 .m-year{transform:rotate(-6deg) translateY(8px)}.m-week{transform:rotate(6deg) translateY(8px)}.m-month{position:relative;z-index:1;transform:scale(1.06)}
@@ -452,7 +452,7 @@ html.js .bx.reveal:not(.in) .ill .w,html.js .bx.reveal:not(.in) .ill .src span{o
 .mg i.p0::after{background:var(--p0)}.mg i.p1::after{background:var(--p1)}.mg i.p2::after{background:var(--p2)}.mg i.p3::after{background:var(--p3)}
 .wg{position:relative;height:92px;display:grid;grid-template-columns:repeat(7,1fr);gap:3px;
   background:repeating-linear-gradient(90deg,var(--bg2) 0 calc(100%/7 - 3px),transparent 0 calc(100%/7))}
-.wg i{position:absolute;left:calc(var(--x) * 100% / 7 + 1px);width:calc(100% / 7 - 5px);top:calc(var(--y) * 16px + 4px);height:calc(var(--h) * 16px);border-radius:4px;opacity:.85}
+.wg i{position:absolute;left:calc(var(--x) * 100% / 7 + 1px);width:calc(100% / 7 - 5px);top:calc(var(--y) * 100% / 6.4 + 3px);height:calc(var(--h) * 100% / 6.4 - 3px);border-radius:4px;opacity:.85}
 .wg i.p0{background:var(--p0)}.wg i.p1{background:var(--p1)}.wg i.p2{background:var(--p2)}.wg i.p3{background:var(--p3)}
 
 /* 2 今日页 */
@@ -472,7 +472,7 @@ html.js .bx.reveal:not(.in) .ill .w,html.js .bx.reveal:not(.in) .ill .src span{o
 .td-line .now::before{content:"";position:absolute;left:-3px;top:-3px;width:7px;height:7px;border-radius:50%;background:inherit}
 
 /* 3 事件与提醒 */
-.ill-ev{padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.ill-ev{padding:10px 14px;display:flex;flex-direction:column;justify-content:center;gap:5px}
 .evr{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 12px;font-size:12.5px;font-weight:600}
 .evr .bar{width:4px;height:18px;border-radius:2px}
 .evr .bar.p1{background:var(--p1)}.evr .bar.p2{background:var(--p2)}.evr .bar.p3{background:var(--p3)}
@@ -615,6 +615,43 @@ html.js .bx.reveal:not(.in) .lx-sign .sig{stroke-dashoffset:1}
 .lx-sync .dash{flex:1;max-width:120px;height:0;border-top:2px dashed var(--line2);margin-bottom:22px}
 .lx-sync .bk-pill{position:absolute;right:14px;bottom:12px;font-size:11px;font-weight:650;color:var(--sub);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:3px 10px}
 @media (max-width:560px){.lx-sync .bk-pill{right:auto;left:50%;transform:translateX(-50%);bottom:8px}.lx-sync .node span{font-size:11px}.lx-sync{padding-bottom:16px}}
+
+/* 示意图里的卡片都是透明液态玻璃：中间几乎全透，靠高光边和背后彩色光的折射显形；深色模式不要白边 */
+.ill{isolation:isolate}
+.ill::before{content:"";position:absolute;inset:-20%;z-index:-1;pointer-events:none;filter:blur(22px);opacity:.75;
+  background:radial-gradient(34% 40% at 22% 30%,color-mix(in oklab,var(--a1) 70%,transparent),transparent 70%),
+             radial-gradient(30% 38% at 78% 26%,color-mix(in oklab,var(--a2) 80%,transparent),transparent 70%),
+             radial-gradient(34% 40% at 58% 82%,color-mix(in oklab,var(--sky) 45%,transparent),transparent 70%)}
+.page-ledger .ill::before{background:radial-gradient(34% 40% at 22% 30%,color-mix(in oklab,var(--lx-inc) 45%,transparent),transparent 70%),
+             radial-gradient(30% 38% at 78% 26%,color-mix(in oklab,var(--lx-gold) 55%,transparent),transparent 70%),
+             radial-gradient(34% 40% at 55% 85%,color-mix(in oklab,var(--lx-exp) 30%,transparent),transparent 70%)}
+:root[data-theme="dark"] .ill::before{opacity:.5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ill::before{opacity:.5}}
+.ill .mini,.ill .evr,.ill .bell,.ill .cam,.ill .w,.ill .src span,.ill-sync .dev,.ill-sync .cloud,.ill-sync .tags span,
+.lx-items .it,.lx-stat .rate,.lx-books .bk:not(.top),.lx-pad .keys i,.lx-pad .amt em,.lx-off .nonet,.lx-sync .node:not(.lock) svg,.lx-sync .bk-pill,.lx-idx .eq{
+  background:linear-gradient(160deg,rgba(255,255,255,.34),rgba(255,255,255,.08) 45%,rgba(255,255,255,.16))!important;
+  border:1px solid rgba(255,255,255,.55)!important;
+  -webkit-backdrop-filter:blur(14px) saturate(1.8);backdrop-filter:blur(14px) saturate(1.8);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.85),inset 0 -1px 1px rgba(255,255,255,.25),inset 1px 0 0 rgba(255,255,255,.3),
+             0 10px 26px -14px rgba(30,20,60,.35)!important}
+:root[data-theme="dark"] :is(.ill .mini,.ill .evr,.ill .bell,.ill .cam,.ill .w,.ill .src span,.ill-sync .dev,.ill-sync .cloud,.ill-sync .tags span,
+.lx-items .it,.lx-stat .rate,.lx-books .bk:not(.top),.lx-pad .keys i,.lx-pad .amt em,.lx-off .nonet,.lx-sync .node:not(.lock) svg,.lx-sync .bk-pill,.lx-idx .eq){
+  background:linear-gradient(160deg,rgba(255,255,255,.10),rgba(255,255,255,.02) 45%,rgba(255,255,255,.05))!important;
+  border-color:transparent!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 1px rgba(255,255,255,.06),0 12px 28px -14px rgba(0,0,0,.6)!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.ill .mini,.ill .evr,.ill .bell,.ill .cam,.ill .w,.ill .src span,.ill-sync .dev,.ill-sync .cloud,.ill-sync .tags span,
+.lx-items .it,.lx-stat .rate,.lx-books .bk:not(.top),.lx-pad .keys i,.lx-pad .amt em,.lx-off .nonet,.lx-sync .node:not(.lock) svg,.lx-sync .bk-pill,.lx-idx .eq){
+  background:linear-gradient(160deg,rgba(255,255,255,.10),rgba(255,255,255,.02) 45%,rgba(255,255,255,.05))!important;
+  border-color:transparent!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 1px rgba(255,255,255,.06),0 12px 28px -14px rgba(0,0,0,.6)!important}}
+/* 玻璃卡片里原来的灰底格子也换成半透明，透出后面的光 */
+.ill .yg i,.ill .mg i,.ill .wm i,.ill .hm i{background:rgba(127,127,140,.14)}
+.ill .wg{background:repeating-linear-gradient(90deg,rgba(127,127,140,.12) 0 calc(100%/7 - 3px),transparent 0 calc(100%/7))}
+/* 深绿的月账本卡片做成深色有色玻璃 */
+.lx-month,.lx-books .bk.top,.lx-sign .card,.lx-sync .lock svg{
+  background:linear-gradient(160deg,rgba(28,70,58,.82),rgba(20,48,42,.7))!important;
+  -webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 14px 28px -14px rgba(10,40,30,.55)!important}
 
 /* 复制邮箱的提示 */
 .mail-toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));z-index:50;transform:translate(-50%,24px);opacity:0;
