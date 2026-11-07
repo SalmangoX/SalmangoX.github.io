@@ -211,7 +211,7 @@ header{transition:background .3s,border-color .3s}
 html.js:not(.scrolled) header{background:transparent;border-color:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
 
 /* 大标题 */
-.hero{min-height:calc(100svh - 60px);display:grid;place-items:center;padding:40px 0 90px;text-align:center;isolation:isolate}
+.hero{min-height:100svh;margin-top:-60px;display:grid;place-items:center;padding:100px 0 90px;text-align:center;isolation:isolate}   /* 往上伸到顶栏后面，背景光和顶栏连成一片，宽窗口不再出现一条深色横带 */
 .hero::before{display:none}
 .hero-in{display:flex;flex-direction:column;align-items:center}
 .aurora{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
