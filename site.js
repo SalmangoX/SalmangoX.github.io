@@ -155,6 +155,22 @@
       window.__sxMailT = setTimeout(function () { t.classList.remove('show'); setTimeout(function () { t.remove(); }, 400); }, 6000);
     });
 
+    // 液态玻璃的边缘折射：中间不动，靠近四边时把背后的画面往外拉，像透过透镜看（SVG 位移滤镜）。
+    // 只有 Chrome / Edge / 安卓 Chrome 能把它用在 backdrop-filter 上；Safari（含 iPhone 上所有浏览器）不支持，保留清透 + 高光
+    var ua = navigator.userAgent || '';
+    if (/Chrome\/\d/.test(ua) && !/iPhone|iPad|iPod/.test(ua) && window.CSS && CSS.supports('backdrop-filter', 'url(#sxLens)') && document.querySelector('.ill')) {
+      var map = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><defs>" +
+        "<linearGradient id='r' x1='0' x2='1'><stop offset='0' stop-color='#000'/><stop offset='.2' stop-color='#800000'/><stop offset='.8' stop-color='#800000'/><stop offset='1' stop-color='#f00'/></linearGradient>" +
+        "<linearGradient id='g' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#000'/><stop offset='.24' stop-color='#008000'/><stop offset='.76' stop-color='#008000'/><stop offset='1' stop-color='#0f0'/></linearGradient></defs>" +
+        "<rect width='100' height='100' fill='url(#r)'/><rect width='100' height='100' fill='url(#g)' style='mix-blend-mode:screen'/></svg>";
+      var box = document.createElement('div');
+      box.innerHTML = '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="sxLens" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB" primitiveUnits="objectBoundingBox">' +
+        '<feImage href="data:image/svg+xml,' + encodeURIComponent(map) + '" x="0" y="0" width="1" height="1" preserveAspectRatio="none" result="map"/>' +
+        '<feDisplacementMap in="SourceGraphic" in2="map" scale=".06" xChannelSelector="R" yChannelSelector="G"/></filter></svg>';
+      document.body.appendChild(box.firstChild);
+      root.classList.add('lens');
+    }
+
     // 跟随鼠标的光晕
     [].forEach.call(document.querySelectorAll('.spot'), function (el) {
       el.addEventListener('pointermove', function (e) {
