@@ -40,12 +40,15 @@
     }
   };
   var ORDER = ['ios', 'mac', 'android', 'web'];
+  var VER = '当前 1.4.2', IPAD = 'web', DEV = { ios: 'iPhone', mac: 'Mac', android: '安卓手机', web: '' };
+  var C = window.SX_DL;                     // 其他页面（月账本）传进来自己的版本数据
+  if (C) { P = C.platforms; ORDER = C.order; VER = C.ver; IPAD = C.ipad || 'web'; DEV = C.dev || DEV; }
 
   function detect() {
     var ua = navigator.userAgent || '';
     var touch = navigator.maxTouchPoints > 1;
     if (/iPhone|iPod/.test(ua)) return 'ios';
-    if (/iPad/.test(ua) || (/Macintosh/.test(ua) && touch)) return 'web';   // iPad 用网页版最合适
+    if (/iPad/.test(ua) || (/Macintosh/.test(ua) && touch)) return IPAD;   // 节律：iPad 用网页版最合适
     if (/Android/.test(ua)) return 'android';
     if (/Macintosh|Mac OS X/.test(ua)) return 'mac';
     return 'web';
@@ -57,7 +60,7 @@
   }
   function badge(k) {
     if (k !== mine) return '<span class="dl-badge sel">你选择的版本</span>';
-    var dev = { ios: 'iPhone', mac: 'Mac', android: '安卓手机', web: '' }[k];
+    var dev = DEV[k];
     return '<span class="dl-badge">' + (dev ? '为你推荐 · 你在用 ' + dev : '为你推荐') + '</span>';
   }
   function btn(b, cls) {
@@ -69,7 +72,7 @@
     return '<div class="dl-glow" aria-hidden="true"></div>' +
       '<div class="dl-top"><div class="dl-tile dl-' + k + '">' + svg(k) + '</div>' +
       '<div class="dl-name">' + badge(k) + '<h3>' + p.name + '</h3>' +
-      '<div class="dl-meta"><span>' + p.req + '</span><span>' + p.size + '</span><span>当前 1.4.2</span></div></div></div>' +
+      '<div class="dl-meta"><span>' + p.req + '</span>' + (p.size ? '<span>' + p.size + '</span>' : '') + (VER ? '<span>' + VER + '</span>' : '') + '</div></div></div>' +
       '<p class="dl-desc">' + p.desc + '</p>' +
       '<ol class="dl-steps">' + p.steps.map(function (t, i) { return '<li><b>' + (i + 1) + '</b><span>' + t + '</span></li>'; }).join('') + '</ol>' +
       '<div class="btns">' + btn(p.main, 'tint') + p.more.map(function (b) { return btn(b, 'ghost'); }).join('') +
@@ -80,13 +83,14 @@
       var p = P[k];
       return '<button type="button" class="dl-item" data-pick="' + k + '">' +
         '<span class="dl-tile sm dl-' + k + '">' + svg(k) + '</span>' +
-        '<span class="dl-it"><b>' + p.name + (k === mine ? '<i>推荐</i>' : '') + '</b><small>' + p.req + ' · ' + p.size + '</small></span>' +
+        '<span class="dl-it"><b>' + p.name + (k === mine ? '<i>推荐</i>' : '') + '</b><small>' + p.req + (p.size ? ' · ' + p.size : '') + '</small></span>' +
         '<span class="dl-go" aria-hidden="true">›</span></button>';
     }).join('');
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     var box = document.getElementById('dlMain'), lst = document.getElementById('dlList');
+    var sec = box && box.closest('section');
     if (!box || !lst) return;
     function paint(anim) {
       if (!anim) { box.innerHTML = main(cur); lst.innerHTML = list(); return; }
@@ -98,7 +102,7 @@
       }, 140);
     }
     paint(false);
-    document.getElementById('download').addEventListener('click', function (e) {
+    sec.addEventListener('click', function (e) {
       var pick = e.target.closest('[data-pick]');
       if (pick) {
         cur = pick.getAttribute('data-pick');

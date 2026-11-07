@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="sx-build" content="202611070110">
+<meta name="sx-build" content="202611070114">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>月账本</title>
 <meta name="description" content="月账本：装在手机主屏幕上的个人记账网页 App。按月记录收支和资产，按季度、按年查看统计，长期追踪独秀指数。">
@@ -10,8 +10,8 @@
 <meta name="theme-color" content="#141318" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" href="img/ledger.png">
 <link rel="icon" href="logo.png" type="image/png">
-<link rel="stylesheet" href="style.css?v=202611070110">
-<script src="site.js?v=202611070110"></script>
+<link rel="stylesheet" href="style.css?v=202611070114">
+<script src="site.js?v=202611070114"></script>
 </head>
 <body class="page-ledger">
 <header>
@@ -30,7 +30,7 @@
       <img class="picon" src="img/ledger.png" alt="月账本图标" width="92" height="92">
       <h1>月账本<small>Monthly Ledger · 0.24 测试版</small></h1>
     </div>
-    <p class="lead">装在手机主屏幕上的个人记账网页 App：按月记录收支和资产，按季度、按年查看统计，并长期追踪「独秀指数」。没有服务器，数据默认只在你自己的设备上。</p>
+    <p class="lead">装在主屏幕上的记账本：每月记一笔总账，或者一笔一笔记；看结余、储蓄率和独秀指数怎么变。没有服务器，数据只在你自己手里。</p>
     <div class="btns">
       <a class="btn tint" href="https://salmangox.github.io/ledger/">打开月账本</a>
       <a class="btn ghost" href="#install">安装到主屏幕</a>
@@ -40,48 +40,95 @@
   <section>
     <div class="wrap">
       <div class="sec-h"><div class="eyebrow">Features</div><h2>功能</h2></div>
-      <div class="grid3">
-        <div class="feat">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="3.5" width="16" height="17" rx="3"/><path d="M8 8.5h8M8 12h8M8 15.5h5"/></svg></div>
+      <div class="bento">
+        <div class="feat bx w2">
+          <div class="ill lx-two" aria-hidden="true">
+            <div class="lx-month" style="--i:0"><b>十月</b>
+              <div class="kv"><span>收入</span><em class="inc">12,800</em></div>
+              <div class="kv"><span>支出</span><em class="exp">6,380</em></div>
+              <div class="kv"><span>月底存款</span><em>48,200</em></div>
+            </div>
+            <svg class="lx-arrow" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M38 12H4M12 4 4 12l8 8"/></svg>
+            <div class="lx-items">
+              <div class="it" style="--i:1"><span>工资</span><em class="inc">+12,000</em></div>
+              <div class="it" style="--i:2"><span>午饭</span><em class="exp">−32</em></div>
+              <div class="it" style="--i:3"><span>地铁</span><em class="exp">−4</em></div>
+              <div class="it" style="--i:4"><span>房租</span><em class="exp">−3,200</em></div>
+            </div>
+          </div>
           <h3>两种记账方式</h3>
-          <p>月账本：每月填一次总数（收入、支出、能力收入、月底存款和欠款）。单笔账本：逐笔记录，可批量录入、自定义分类，自动汇总到月账本。</p>
+          <p>每月记一次总数，或一笔一笔记、自动汇总</p>
         </div>
-        <div class="feat">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 19V13M10 19V9M15 19v-6M20 19V5"/></svg></div>
+        <div class="feat bx ">
+          <div class="ill lx-stat" aria-hidden="true">
+            <div class="bars"><div class="b" style="--i:0"><i class="inc" style="--h:62%"></i><i class="exp" style="--h:40%"></i></div><div class="b" style="--i:1"><i class="inc" style="--h:70%"></i><i class="exp" style="--h:52%"></i></div><div class="b" style="--i:2"><i class="inc" style="--h:66%"></i><i class="exp" style="--h:38%"></i></div><div class="b" style="--i:3"><i class="inc" style="--h:78%"></i><i class="exp" style="--h:45%"></i></div><div class="b" style="--i:4"><i class="inc" style="--h:74%"></i><i class="exp" style="--h:50%"></i></div><div class="b" style="--i:5"><i class="inc" style="--h:84%"></i><i class="exp" style="--h:42%"></i></div></div>
+            <div class="rate"><b>50%</b><span>储蓄率</span></div>
+          </div>
           <h3>月 / 季 / 年统计</h3>
-          <p>结余、储蓄率和净资产；本季度至今、今年至今的累计；和上月、去年同月对比。</p>
+          <p>结余、储蓄率、净资产，和上月、去年比</p>
         </div>
-        <div class="feat">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17 9 11.5l3.5 3.5L20.5 7"/><path d="M15.5 7h5v5"/></svg></div>
-          <h3>独秀指数走势</h3>
-          <p>记录每个月的独秀指数，可左右滑动的长期走势图，加年度明细表。</p>
+        <div class="feat bx w2">
+          <div class="ill lx-idx" aria-hidden="true">
+            <svg viewBox="0 0 320 150" preserveAspectRatio="none">
+              <line x1="0" y1="62" x2="320" y2="62" class="one"/>
+              <path class="area" d="M0 128 C40 120 60 112 90 104 S150 92 180 78 S240 60 270 48 S310 36 320 32 L320 150 L0 150Z"/>
+              <path class="ln" pathLength="1" d="M0 128 C40 120 60 112 90 104 S150 92 180 78 S240 60 270 48 S310 36 320 32"/>
+            </svg>
+            <span class="lbl">1.0</span>
+            <span class="eq">能力收入 ÷ 理想生活成本</span>
+          </div>
+          <h3>独秀指数</h3>
+          <p>≥ 1，说明靠自己就撑得起想要的生活</p>
+          <p class="src-note">灵感来自一位 YouTube 创作者</p>
         </div>
-        <div class="feat">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3.5" y="6" width="13" height="14" rx="2.5"/><path d="M7.5 3h10a3 3 0 0 1 3 3v11"/></svg></div>
-          <h3>多账本</h3>
-          <p>新建多个账本并自定义名称，各账本的数据互不影响。</p>
+        <div class="feat bx ">
+          <div class="ill lx-books" aria-hidden="true">
+            <div class="bk" style="--r:-8deg;--x:-38px;--i:0"><b>旅行</b></div>
+            <div class="bk" style="--r:6deg;--x:38px;--i:1"><b>副业</b></div>
+            <div class="bk top" style="--r:0deg;--x:0px;--i:2"><b>日常</b><span>本月结余</span><em>6,420</em></div>
+          </div>
+          <h3>多个账本</h3>
+          <p>日常、旅行、副业，互不影响</p>
         </div>
-        <div class="feat">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17c3-1 4.5-7 7-7 2 0 .5 6 3 6 2 0 2.5-4 4-4 1 0 1.5 1.5 3 1.5"/><path d="M3.5 20.5h17"/></svg></div>
+        <div class="feat bx ">
+          <div class="ill lx-sign" aria-hidden="true">
+            <div class="card"><span>月账本</span>
+              <svg viewBox="0 0 200 80" fill="none"><path class="sig" pathLength="1" d="M10 58 C24 30 34 20 40 34 C46 50 30 66 44 56 C60 44 66 22 74 30 C82 40 70 62 88 52 C104 42 108 30 118 38 C126 46 120 60 136 52 C150 44 160 40 190 42"/></svg>
+            </div>
+          </div>
           <h3>手写签名</h3>
-          <p>横屏手写板，带钢笔笔锋，可调粗细；签名显示在首页卡片右上角，可存为方案一键套用到所有账本。</p>
+          <p>横屏手写，带钢笔笔锋</p>
         </div>
-        <div class="feat">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="3.5" width="16" height="17" rx="3"/><path d="M8 8h.01M12 8h.01M16 8h.01M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h4"/></svg></div>
+        <div class="feat bx ">
+          <div class="ill lx-pad" aria-hidden="true">
+            <div class="amt"><span>¥</span>1,280<em>粘贴</em></div>
+            <div class="keys"><i style="--i:0">1</i><i style="--i:1">2</i><i style="--i:2">3</i><i style="--i:3">4</i><i style="--i:4">5</i><i style="--i:5">6</i><i style="--i:6">7</i><i style="--i:7">8</i><i style="--i:8">9</i><i style="--i:9">.</i><i style="--i:10">0</i><i style="--i:11">⌫</i></div>
+          </div>
           <h3>顺手的输入</h3>
-          <p>自带数字键盘，支持从剪贴板粘贴金额，下滑收起；日期和月份用表格或滚轮选。</p>
+          <p>自带数字键盘，金额可以直接粘贴</p>
+        </div>
+        <div class="feat bx ">
+          <div class="ill lx-off" aria-hidden="true">
+            <div class="phone"><img src="img/ledger.png" alt=""><span>月账本</span></div>
+            <div class="nonet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0"/><circle cx="12" cy="19" r="1" fill="currentColor"/><path d="M3 3l18 18"/></svg>没有网络也能用</div>
+          </div>
+          <h3>离线可用</h3>
+          <p>装到主屏幕，没网也能记</p>
+        </div>
+        <div class="feat bx w3">
+          <div class="ill lx-sync" aria-hidden="true">
+            <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="3" width="10" height="18" rx="2.5"/></svg><span>你的设备</span></div>
+            <i class="dash" style="--i:0"></i>
+            <div class="node lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg><span>同步密码加密</span></div>
+            <i class="dash" style="--i:1"></i>
+            <div class="node"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg><span>你自己的私密 Gist</span></div>
+            <div class="bk-pill">也可以随时导出备份</div>
+          </div>
+          <h3>数据只在你手里</h3>
+          <p>没有服务器；可选加密同步到你自己的 GitHub，换手机前导出备份</p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <div class="formula">
-        <div class="eyebrow" style="color:rgba(242,247,244,.6)">Duxiu Index</div>
-        <div class="eq" style="margin-top:10px">独秀指数 = <b>能力收入（月）</b> ÷ <i>理想生活成本（月）</i></div>
-        <p>能力收入是靠自己能力挣到的钱，比如工资、兼职、副业；理想生活成本是过上想要的生活每月需要多少钱，可以随时修改，从生效月份起计算。指数 ≥ 1，说明靠自己的能力已经能撑起理想生活。灵感来自一位 YouTube 创作者。</p>
-      </div>
+      <p class="note">浅色 / 深色 / 跟随系统；简体中文、繁體中文、English、日本語。当前为 0.24 测试版，功能和数据格式仍可能调整。</p>
     </div>
   </section>
 
@@ -89,40 +136,47 @@
     <div class="wrap">
       <div class="sec-h">
         <div class="eyebrow">Install</div>
-        <h2>安装到主屏幕</h2>
-        <p>月账本是网页 App，不用去应用商店。在 App 菜单里点「安装到主屏幕」，装好后从主屏幕图标打开，没有网络也能用。</p>
+        <h2>装到主屏幕</h2>
+        <p>月账本是网页 App，不用去应用商店；装好后从主屏幕图标打开，没有网络也能用。</p>
       </div>
-      <table>
-        <tr><th>安卓 Chrome / Edge、电脑 Chrome / Edge</th><td>点按钮后在系统弹窗里确认「安装」</td></tr>
-        <tr><th>iPhone / iPad（Safari、Chrome）</th><td>按 App 里的图文引导：分享 → 添加到主屏幕</td></tr>
-        <tr><th>Mac Safari</th><td>菜单栏「文件」→「添加到程序坞」</td></tr>
-      </table>
+      <div class="dl">
+        <article class="dl-main" id="dlMain" aria-live="polite"></article>
+        <div class="dl-others">
+          <div class="dl-ot">其他设备</div>
+          <div class="dl-list" id="dlList"></div>
+        </div>
+      </div>
       <p class="note">从主屏幕图标打开和在浏览器标签页里打开，数据是分开保存的。</p>
-      <div class="btns" style="margin-top:20px"><a class="btn tint" href="https://salmangox.github.io/ledger/">打开月账本</a></div>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <div class="sec-h"><div class="eyebrow">Privacy</div><h2>数据与同步</h2></div>
-      <div class="grid3">
-        <div class="feat">
-          <h3>只在你的设备上</h3>
-          <p>没有服务器，不收集任何信息。仓库公开的只有程序代码，不包含任何人的记账数据。</p>
-        </div>
-        <div class="feat">
-          <h3>导出备份</h3>
-          <p>菜单 →「导出备份」把所有账本导出成一个文件。换手机或清理浏览器数据前请先备份。</p>
-        </div>
-        <div class="feat">
-          <h3>加密多设备同步（可选）</h3>
-          <p>先用你设的同步密码加密，再存进你自己 GitHub 账号下的私密 Gist，连 GitHub 也看不到内容。忘了密码云端就无法解密。</p>
-        </div>
-      </div>
-      <p class="note">界面支持浅色、深色、跟随系统；语言支持简体中文、繁體中文、English、日本語。当前为测试版，功能和数据格式仍可能调整。</p>
     </div>
   </section>
 </main>
+<script>
+window.SX_DL = {
+  ver: '0.24 测试版', ipad: 'ios',
+  dev: { ios: 'iPhone / iPad', android: '安卓手机', mac: 'Mac', web: '电脑' },
+  order: ['ios', 'android', 'mac', 'web'],
+  platforms: {
+    ios: { name: 'iPhone / iPad', req: 'Safari 或 Chrome', size: '',
+      desc: '在 Safari 里打开月账本，按 App 里的图文引导添加到主屏幕，像普通 App 一样从桌面打开。',
+      steps: ['用 Safari 打开月账本', '按月账本里的图文引导：分享 →「添加到主屏幕」', '以后从主屏幕的图标打开'],
+      main: { label: '打开月账本', href: 'https://salmangox.github.io/ledger/' }, more: [] },
+    android: { name: '安卓', req: 'Chrome 或 Edge', size: '',
+      desc: '在 Chrome 里打开，点月账本菜单里的「安装到主屏幕」，在系统弹窗里确认就装好了。',
+      steps: ['用 Chrome 或 Edge 打开月账本', '月账本菜单 →「安装到主屏幕」，在弹窗里确认', '以后从桌面图标打开'],
+      main: { label: '打开月账本', href: 'https://salmangox.github.io/ledger/' }, more: [] },
+    mac: { name: 'Mac', req: 'Safari、Chrome 或 Edge', size: '',
+      desc: '可以添加到程序坞，像一个独立的 App 一样打开。',
+      steps: ['用 Safari 打开月账本', '菜单栏「文件」→「添加到程序坞」', '用 Chrome / Edge 的话：月账本菜单 →「安装到主屏幕」'],
+      main: { label: '打开月账本', href: 'https://salmangox.github.io/ledger/' }, more: [] },
+    web: { name: '电脑（Windows 等）', req: 'Chrome 或 Edge', size: '',
+      desc: '在浏览器里安装成应用，有自己的窗口和图标。',
+      steps: ['用 Chrome 或 Edge 打开月账本', '月账本菜单 →「安装到主屏幕」，在弹窗里确认', '以后从开始菜单或桌面打开'],
+      main: { label: '打开月账本', href: 'https://salmangox.github.io/ledger/' }, more: [] }
+  }
+};
+</script>
+<script src="dl.js?v=202611070114"></script>
+
 
 <footer>
   <div class="wrap">
