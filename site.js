@@ -135,6 +135,26 @@
     setTimeout(window.sxCheckUpdate, 600);
     document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') window.sxCheckUpdate(); });
 
+    // 「联系」：不直接交给系统的邮件程序（有的设备会被默认打开网易等邮箱网站），
+    // 先把邮箱复制好，底部提示里再给一个「用邮件 App 写信」
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href^="mailto:"]');
+      if (!a || e.target.closest('.mail-toast')) return;
+      e.preventDefault();
+      var mail = a.getAttribute('href').slice(7);
+      var old = document.getElementById('sxMail'); if (old) old.remove();
+      var t = document.createElement('div');
+      t.id = 'sxMail'; t.className = 'mail-toast'; t.setAttribute('role', 'status');
+      t.innerHTML = '<span>邮箱已复制：<b></b></span><a href="mailto:' + mail + '">用邮件 App 写信</a>';
+      t.querySelector('b').textContent = mail;
+      document.body.appendChild(t);
+      requestAnimationFrame(function () { t.classList.add('show'); });
+      var copied = function () {}, fail = function () { t.querySelector('span').firstChild.textContent = '联系邮箱：'; };
+      if (navigator.clipboard) navigator.clipboard.writeText(mail).then(copied, fail); else fail();
+      clearTimeout(window.__sxMailT);
+      window.__sxMailT = setTimeout(function () { t.classList.remove('show'); setTimeout(function () { t.remove(); }, 400); }, 6000);
+    });
+
     // 跟随鼠标的光晕
     [].forEach.call(document.querySelectorAll('.spot'), function (el) {
       el.addEventListener('pointermove', function (e) {
