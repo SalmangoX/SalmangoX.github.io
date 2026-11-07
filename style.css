@@ -362,6 +362,62 @@ html.js:not(.scrolled) header{background:transparent;border-color:transparent;-w
   transition:transform .5s var(--ease),opacity .5s var(--ease)}
 .update-toast.show{transform:translate(-50%,0);opacity:1}
 
+/* 节律下载区：上面一张推荐卡片（按访客设备选），右边 / 下面是其他版本 */
+.pdots{display:flex;align-items:center;gap:6px;margin-top:10px}
+.pdots i{width:12px;height:12px;border-radius:50%;background:var(--c);box-shadow:0 0 0 2px var(--card)}
+.pdots span{font-size:12px;color:var(--faint);margin-left:4px}
+.dl{display:grid;grid-template-columns:1.65fr 1fr;gap:16px;align-items:start}
+@media (max-width:860px){.dl{grid-template-columns:1fr}}
+.dl-main{position:relative;overflow:hidden;isolation:isolate;background:var(--card);border:1px solid var(--line);border-radius:30px;
+  padding:30px;box-shadow:var(--shadow);transition:opacity .2s var(--ease),transform .28s var(--ease)}
+.dl-main.out{opacity:0;transform:translateY(8px) scale(.99)}
+.dl-main.in{animation:dlIn .3s var(--ease)}
+@keyframes dlIn{from{opacity:0;transform:translateY(-6px) scale(.99)}}
+@media (max-width:560px){.dl-main{padding:22px 18px;border-radius:26px}}
+.dl-glow{position:absolute;right:-120px;top:-140px;width:380px;height:380px;border-radius:50%;z-index:-1;pointer-events:none;
+  background:radial-gradient(circle,color-mix(in oklab,var(--a1) 34%,transparent),color-mix(in oklab,var(--a2) 22%,transparent) 45%,transparent 70%);filter:blur(10px)}
+.dl-top{display:flex;align-items:center;gap:18px}
+.dl-tile{flex:none;display:grid;place-items:center;width:76px;height:76px;border-radius:22px;color:#fff;
+  box-shadow:0 10px 24px -8px rgba(40,30,70,.35),inset 0 1px 0 rgba(255,255,255,.45)}
+.dl-tile svg{width:38px;height:38px}
+.dl-tile.sm{width:44px;height:44px;border-radius:13px;box-shadow:0 6px 14px -6px rgba(40,30,70,.3),inset 0 1px 0 rgba(255,255,255,.45)}
+.dl-tile.sm svg{width:24px;height:24px}
+.dl-ios{background:linear-gradient(140deg,#B6B3D2,#86AAE2)}
+.dl-mac{background:linear-gradient(140deg,#E9CFB6,#A29FC0)}
+.dl-android{background:linear-gradient(140deg,#9FD5B9,#5E9E85)}
+.dl-web{background:linear-gradient(140deg,#8DB2E8,#E2C2A4)}
+.dl-name h3{margin:6px 0 2px;font-size:clamp(26px,3.4vw,34px);letter-spacing:-.02em}
+.dl-badge{display:inline-block;font-size:12px;font-weight:650;letter-spacing:.02em;padding:3px 10px;border-radius:999px;
+  color:var(--pc-ink);background:color-mix(in oklab,var(--pc) 13%,transparent)}
+.dl-badge.sel{color:var(--sub);background:var(--bg2)}
+.dl-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;font-size:12.5px;color:var(--sub)}
+.dl-meta span{background:var(--bg2);border:1px solid var(--line);border-radius:99px;padding:1px 10px}
+.dl-desc{color:var(--sub);margin:20px 0 18px;font-size:15.5px;max-width:620px}
+.dl-steps{list-style:none;padding:0;margin:0 0 24px;display:grid;gap:8px}
+@media (max-width:760px){.dl-steps{grid-template-columns:1fr}}
+.dl-steps li{display:flex;gap:10px;align-items:flex-start;background:var(--bg2);border:1px solid var(--line);border-radius:16px;
+  padding:11px 14px;font-size:14px;line-height:1.55;color:var(--sub);align-items:center}
+.dl-steps b{flex:none;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;font-size:12px;
+  color:var(--pc-ink);background:color-mix(in oklab,var(--pc) 14%,transparent)}
+.dl-main .btns{align-items:center}
+.dl-main button.btn{font:inherit;font-size:15px;font-weight:600;cursor:pointer;color:inherit}
+.dl-back{appearance:none;border:0;background:none;font:inherit;font-size:14px;color:var(--sub);cursor:pointer;
+  padding:10px 6px;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line2)}
+.dl-back:hover{color:var(--ink)}
+.dl-ot{font-size:12.5px;letter-spacing:.16em;color:var(--faint);font-weight:650;margin:6px 4px 10px}
+.dl-list{display:grid;gap:10px}
+@media (max-width:860px) and (min-width:561px){.dl-list{grid-template-columns:repeat(3,1fr)}.dl-item small{display:none}}
+.dl-item{appearance:none;display:flex;align-items:center;gap:14px;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;
+  background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px 16px;min-height:64px;
+  transition:transform .25s var(--ease),border-color .25s,box-shadow .25s}
+@media (hover:hover){.dl-item:hover{transform:translateY(-2px);border-color:var(--line2);box-shadow:var(--shadow)}}
+.dl-item:active{transform:scale(.98)}
+.dl-it{display:grid;min-width:0;flex:1}
+.dl-it b{font-size:15.5px;display:flex;align-items:center;gap:8px}
+.dl-it i{font-style:normal;font-size:11px;font-weight:650;color:var(--pc-ink);background:color-mix(in oklab,var(--pc) 13%,transparent);border-radius:99px;padding:0 7px;line-height:18px}
+.dl-it small{font-size:12.5px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dl-go{font-size:22px;color:var(--faint);line-height:1}
+
 /* 滚动渐显（没有 JS 时直接显示） */
 html.js .reveal{opacity:0;transform:translateY(36px) scale(.985);transition:opacity 1s var(--ease),transform 1s var(--ease);
   transition-delay:var(--d,0s)}
