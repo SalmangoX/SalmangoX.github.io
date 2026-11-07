@@ -24,13 +24,13 @@
     if (b && window.SX_LANGS) {
       var lab = document.createElement('label');
       lab.className = 'theme lang';
-      var sel = document.createElement('select');
-      sel.setAttribute('aria-label', T('语言'));
-      window.SX_LANGS.forEach(function (x) { var o = document.createElement('option'); o.value = x[0]; o.textContent = x[2]; sel.appendChild(o); });
-      sel.value = window.sxLang;
-      sel.addEventListener('change', function () { try { localStorage.setItem('sx-lang', sel.value); } catch (e) {} location.reload(); });
+      var langSel = document.createElement('select');
+      langSel.setAttribute('aria-label', T('语言'));
+      window.SX_LANGS.forEach(function (x) { var o = document.createElement('option'); o.value = x[0]; o.textContent = x[2]; langSel.appendChild(o); });
+      langSel.value = window.sxLang;
+      langSel.addEventListener('change', function () { try { localStorage.setItem('sx-lang', langSel.value); } catch (e) {} location.reload(); });
       lab.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.7 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.7-3.8-9S9.4 5.6 12 3Z"/></svg>';
-      lab.appendChild(sel);
+      lab.appendChild(langSel);
       b.insertAdjacentElement('afterend', lab);
     }
 

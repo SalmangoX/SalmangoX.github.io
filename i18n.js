@@ -284,7 +284,7 @@
   ];
 
   function pick() {
-    try { var s = localStorage.getItem('sx-lang'); if (s && COL[s] !== undefined || s === 's') return s; } catch (e) {}
+    try { var s = localStorage.getItem('sx-lang'); if (s && (COL[s] !== undefined || s === 's')) return s; } catch (e) {}
     var q = /[?&]lang=(\w+)/.exec(location.search); if (q && (COL[q[1]] !== undefined || q[1] === 's')) return q[1];
     var ls = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || 'zh-CN'];
     for (var i = 0; i < ls.length; i++) {
