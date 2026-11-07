@@ -47,6 +47,7 @@ code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:.86em;backgrou
 header{position:sticky;top:0;z-index:10;background:var(--hdr);border-bottom:1px solid var(--line);
   -webkit-backdrop-filter:saturate(1.6) blur(16px);backdrop-filter:saturate(1.6) blur(16px)}
 .bar{display:flex;align-items:center;gap:6px;height:60px}
+header .wrap.bar{max-width:none;padding:0 clamp(16px,3vw,40px)}   /* 顶栏铺满整个窗口宽度：品牌名贴左、「作品 · GitHub」贴右，宽窗口里不会缩到中间 */
 .brand{display:flex;align-items:center;gap:10px;font-weight:680;letter-spacing:.01em;margin-right:auto;padding:8px 0}
 .brand svg{width:28px;height:28px;flex:none}
 .brand img{width:28px;height:28px;flex:none;display:block}
@@ -634,22 +635,26 @@ html.js .bx.reveal:not(.in) .lx-sign .sig{stroke-dashoffset:1}
 :root[data-theme="dark"] .ill::before{opacity:.7}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ill::before{opacity:.7}}
 .ill .mini,.ill .evr,.ill .bell,.ill .cam,.ill .w,.ill .src span,.ill-sync .dev,.ill-sync .cloud,.ill-sync .tags span,.lx-items .it,.lx-stat .rate,.lx-books .bk:not(.top),.lx-pad .keys i,.lx-pad .amt em,.lx-off .nonet,.lx-sync .node:not(.lock) svg,.lx-sync .bk-pill,.lx-idx .eq{
-  border:1.2px solid transparent!important;
-  background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.03) 40%,rgba(255,255,255,.08)) padding-box,
-             conic-gradient(from 200deg,rgba(255,255,255,.25),rgba(255,255,255,.95) 40deg,rgba(255,255,255,.3) 100deg,rgba(255,255,255,.08) 180deg,rgba(255,255,255,.55) 230deg,rgba(255,255,255,.1) 290deg,rgba(255,255,255,.25)) border-box!important;
-  -webkit-backdrop-filter:blur(.6px) saturate(1.9) brightness(1.05);backdrop-filter:blur(.6px) saturate(1.9) brightness(1.05);
-  box-shadow:inset 0 10px 14px -12px rgba(255,255,255,.95),inset 0 -10px 14px -12px rgba(40,30,70,.22),inset 0 0 10px rgba(255,255,255,.18),
-             inset 2px 2px 1px -1px rgba(255,255,255,.9),inset -1px -1px 1px -1px rgba(255,255,255,.55),
+  border:0!important;
+  background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.02) 40%,rgba(255,255,255,.06))!important;
+  -webkit-backdrop-filter:blur(.6px) saturate(1.6);backdrop-filter:blur(.6px) saturate(1.6);
+  box-shadow:inset 0 10px 14px -12px rgba(255,255,255,.75),inset 0 -10px 14px -12px rgba(40,30,70,.2),inset 0 0 8px rgba(255,255,255,.1),
              0 12px 24px -14px rgba(30,20,60,.32)!important}
-html.lens :is(.ill .mini,.ill .w,.lx-stat .rate,.lx-books .bk:not(.top),.ill-sync .cloud){backdrop-filter:url(#sxLens) saturate(1.9) brightness(1.05)}   /* 小按钮、小标签太窄，折射会拉出金属一样的条纹，只给大一点的卡片 */
+/* 光边单独画在一圈 1.2px 的环上（用遮罩挖空中间），左上最亮、右下一点反光 */
+:where(.ill .mini,.ill .evr,.ill .bell,.ill .w,.ill .src span,.ill-sync .dev,.ill-sync .cloud,.ill-sync .tags span,.lx-items .it,.lx-stat .rate,.lx-books .bk:not(.top),.lx-pad .keys i,.lx-pad .amt em,.lx-off .nonet){position:relative}
+:is(.ill .mini,.ill .evr,.ill .bell,.ill .cam,.ill .w,.ill .src span,.ill-sync .dev,.ill-sync .cloud,.ill-sync .tags span,.lx-items .it,.lx-stat .rate,.lx-books .bk:not(.top),.lx-pad .keys i,.lx-pad .amt em,.lx-off .nonet,.lx-sync .bk-pill,.lx-idx .eq)::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;padding:1.2px;pointer-events:none;
+  background:conic-gradient(from 200deg,rgba(255,255,255,.25),rgba(255,255,255,.95) 40deg,rgba(255,255,255,.3) 100deg,rgba(255,255,255,.08) 180deg,rgba(255,255,255,.55) 230deg,rgba(255,255,255,.1) 290deg,rgba(255,255,255,.25));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+html.lens :is(.ill .w,.lx-stat .rate,.lx-books .bk:not(.top),.ill-sync .cloud){backdrop-filter:url(#sxLens) saturate(1.6)}   /* 小按钮、小标签太窄，折射会拉出金属一样的条纹，只给大一点的卡片 */
 :root[data-theme="dark"] :is(.ill .mini,.ill .evr,.ill .bell,.ill .cam,.ill .w,.ill .src span,.ill-sync .dev,.ill-sync .cloud,.ill-sync .tags span,.lx-items .it,.lx-stat .rate,.lx-books .bk:not(.top),.lx-pad .keys i,.lx-pad .amt em,.lx-off .nonet,.lx-sync .node:not(.lock) svg,.lx-sync .bk-pill,.lx-idx .eq){
-  background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.01) 40%,rgba(255,255,255,.03)) padding-box,
-             conic-gradient(from 200deg,rgba(255,255,255,.04),rgba(255,255,255,.38) 40deg,rgba(255,255,255,.06) 100deg,transparent 180deg,rgba(255,255,255,.18) 230deg,transparent 290deg,rgba(255,255,255,.04)) border-box!important;
+  background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.01) 40%,rgba(255,255,255,.03))!important;
   box-shadow:inset 0 10px 14px -12px rgba(255,255,255,.3),inset 0 -10px 14px -12px rgba(0,0,0,.45),inset 2px 2px 1px -1px rgba(255,255,255,.35),0 12px 26px -14px rgba(0,0,0,.6)!important}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.ill .mini,.ill .evr,.ill .bell,.ill .cam,.ill .w,.ill .src span,.ill-sync .dev,.ill-sync .cloud,.ill-sync .tags span,.lx-items .it,.lx-stat .rate,.lx-books .bk:not(.top),.lx-pad .keys i,.lx-pad .amt em,.lx-off .nonet,.lx-sync .node:not(.lock) svg,.lx-sync .bk-pill,.lx-idx .eq){
-  background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.01) 40%,rgba(255,255,255,.03)) padding-box,
-             conic-gradient(from 200deg,rgba(255,255,255,.04),rgba(255,255,255,.38) 40deg,rgba(255,255,255,.06) 100deg,transparent 180deg,rgba(255,255,255,.18) 230deg,transparent 290deg,rgba(255,255,255,.04)) border-box!important;
+  background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.01) 40%,rgba(255,255,255,.03))!important;
   box-shadow:inset 0 10px 14px -12px rgba(255,255,255,.3),inset 0 -10px 14px -12px rgba(0,0,0,.45),inset 2px 2px 1px -1px rgba(255,255,255,.35),0 12px 26px -14px rgba(0,0,0,.6)!important}}
+:root[data-theme="dark"] :is(.ill .mini,.ill .evr,.ill .bell,.ill .cam,.ill .w,.ill .src span,.ill-sync .dev,.ill-sync .cloud,.ill-sync .tags span,.lx-items .it,.lx-stat .rate,.lx-books .bk:not(.top),.lx-pad .keys i,.lx-pad .amt em,.lx-off .nonet,.lx-sync .bk-pill,.lx-idx .eq)::after{opacity:.4}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.ill .mini,.ill .evr,.ill .bell,.ill .cam,.ill .w,.ill .src span,.ill-sync .dev,.ill-sync .cloud,.ill-sync .tags span,.lx-items .it,.lx-stat .rate,.lx-books .bk:not(.top),.lx-pad .keys i,.lx-pad .amt em,.lx-off .nonet,.lx-sync .bk-pill,.lx-idx .eq)::after{opacity:.4}}
 /* 玻璃卡片里原来的灰底格子也换成半透明，透出后面的光 */
 .ill .yg i,.ill .mg i,.ill .wm i,.ill .hm i{background:rgba(127,127,140,.14)}
 .ill .wg{background:repeating-linear-gradient(90deg,rgba(127,127,140,.12) 0 calc(100%/7 - 3px),transparent 0 calc(100%/7))}
@@ -658,6 +663,17 @@ html.lens :is(.ill .mini,.ill .w,.lx-stat .rate,.lx-books .bk:not(.top),.ill-syn
   background:linear-gradient(160deg,rgba(28,70,58,.8),rgba(20,48,42,.66))!important;
   -webkit-backdrop-filter:blur(.6px) saturate(1.6);backdrop-filter:blur(.6px) saturate(1.6);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 14px 28px -14px rgba(10,40,30,.55)!important}
+
+/* 示意图是渲染好的图片（tools/render.py 生成）：浅色 / 深色各一张，跟着外观切换；宽卡片在手机上换成窄图 */
+.ill.ill-img{background:none}
+.ill.ill-img::before{display:none}
+.ill-img picture,.ill-img img{display:block;width:100%;height:100%}
+.ill-img img{object-fit:cover;transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.ill-img .im-d{display:none}
+:root[data-theme="dark"] .ill-img .im-l{display:none}
+:root[data-theme="dark"] .ill-img .im-d{display:block}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ill-img .im-l{display:none}:root:not([data-theme="light"]) .ill-img .im-d{display:block}}
+html.js .bx.reveal:not(.in) .ill-img img{opacity:0;transform:scale(.97)}
 
 /* 复制邮箱的提示 */
 .mail-toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));z-index:50;transform:translate(-50%,24px);opacity:0;

@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>render</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  html,body{margin:0;overflow:hidden}
+  #box{border:0!important;border-radius:0!important;box-shadow:none!important;background:none!important;padding:0!important;margin:0!important}
+  #box .ill{margin:0!important;border-radius:0!important}
+  *,*::before,*::after{transition:none!important;animation:none!important}
+</style>
+</head>
+<body>
+<!-- 示意图渲染页：tools/render.py 用无界面 Chrome 打开它截图。?page=cadence|ledger&i=第几张&theme=light|dark -->
+<div id="box" class="feat bx in"></div>
+<script>
+  var q = new URLSearchParams(location.search);
+  document.documentElement.setAttribute('data-theme', q.get('theme') || 'light');
+  document.body.className = q.get('page') === 'ledger' ? 'page-ledger' : 'page-cadence';
+  // 液态玻璃的边缘折射（和 site.js 里同一个滤镜）
+  var map = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><defs>" +
+    "<linearGradient id='r' x1='0' x2='1'><stop offset='0' stop-color='#000'/><stop offset='.2' stop-color='#800000'/><stop offset='.8' stop-color='#800000'/><stop offset='1' stop-color='#f00'/></linearGradient>" +
+    "<linearGradient id='g' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#000'/><stop offset='.24' stop-color='#008000'/><stop offset='.76' stop-color='#008000'/><stop offset='1' stop-color='#0f0'/></linearGradient></defs>" +
+    "<rect width='100' height='100' fill='url(#r)'/><rect width='100' height='100' fill='url(#g)' style='mix-blend-mode:screen'/></svg>";
+  var f = document.createElement('div');
+  f.innerHTML = '<svg width="0" height="0" style="position:absolute"><filter id="sxLens" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB" primitiveUnits="objectBoundingBox">' +
+    '<feImage href="data:image/svg+xml,' + encodeURIComponent(map) + '" x="0" y="0" width="1" height="1" preserveAspectRatio="none" result="map"/>' +
+    '<feDisplacementMap in="SourceGraphic" in2="map" scale=".06" xChannelSelector="R" yChannelSelector="G"/></filter></svg>';
+  document.body.appendChild(f.firstChild);
+  document.documentElement.classList.add('lens');
+  // 按指定宽度排版（无界面 Chrome 的窗口至少 500 宽，截图后再裁）；m=1 时强制套用手机上的那套样式
+  document.getElementById('box').style.width = (q.get('w') || 301) + 'px';
+  if (q.get('m') === '1') {
+    var cx = new XMLHttpRequest(); cx.open('GET', '../style.css', false); cx.send();
+    var css = cx.responseText, out = '', re = /@media \(max-width:560px\)\{/g, m;
+    while ((m = re.exec(css))) {
+      var k = re.lastIndex, depth = 1;
+      while (depth && k < css.length) { if (css[k] === '{') depth++; else if (css[k] === '}') depth--; k++; }
+      out += css.slice(re.lastIndex, k - 1) + '\n';
+    }
+    var st = document.createElement('style'); st.textContent = out; document.head.appendChild(st);
+  }
+  var x = new XMLHttpRequest();
+  x.open('GET', 'ill-' + q.get('page') + '.html', false);   // 同步取，截图时内容一定已经在
+  x.send();
+  var d = document.createElement('div');
+  d.innerHTML = x.responseText;
+  document.getElementById('box').appendChild(d.querySelectorAll('.ill')[+q.get('i')]);
+</script>
+</body>
+</html>
