@@ -54,9 +54,11 @@ header .wrap.bar{max-width:none;padding:0 clamp(16px,3vw,40px)}   /* 顶栏铺�
 .brand{display:flex;align-items:center;gap:10px;font-weight:680;letter-spacing:.01em;margin-right:auto;padding:8px 0}
 .brand svg{width:28px;height:28px;flex:none}
 .brand img{width:28px;height:28px;flex:none;display:block}
-/* 手绘 logo 是浅淡的粉彩，浅色背景上看不清：浅色模式下加深、提饱和（颜色还是那几个），深色模式保持原样 */
-:root:not([data-theme="dark"]) .brand img{filter:saturate(2.2) brightness(.68) contrast(1.2)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .brand img{filter:none}}
+/* 浅色模式用黑色单色版 logo（彩色的粉彩在浅色背景上看不清），深色模式用彩色版 */
+.brand .lg-c{display:none}
+:root[data-theme="dark"] .brand .lg-m{display:none}
+:root[data-theme="dark"] .brand .lg-c{display:block}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .brand .lg-m{display:none}:root:not([data-theme="light"]) .brand .lg-c{display:block}}
 .nav a{font-size:14.5px;color:var(--sub);padding:10px 12px;border-radius:10px}
 .nav a:hover,.nav a[aria-current]{color:var(--ink)}
 .nav a[aria-current]{font-weight:600}
