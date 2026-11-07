@@ -20,14 +20,14 @@
     mac: {
       name: 'Mac', req: 'macOS 14 及以上', size: '约 4 MB',
       desc: '窗口里是完整的节律，关掉窗口留在菜单栏，随手看本月和今天；桌面小组件、系统通知，macOS 26 上是液态玻璃。',
-      steps: ['下载 .dmg，把 Cadence 拖进「应用程序」', '第一次打不开：系统设置 → 隐私与安全性 → 仍要打开', '有新版时菜单栏会提示，点「更新…」即可'],
+      steps: ['下载 .dmg，把 Cadence 拖进「应用程序」', '有新版时菜单栏会提示，点「更新…」即可'],
       main: { label: '下载 .dmg', href: CDN + '@dist/Cadence.dmg' },
       more: [{ label: '从源码编译', href: REL + '/tree/main/macos' }]
     },
     android: {
       name: '安卓', req: '安卓 12 及以上', size: 'APK · 约 21 MB',
-      desc: '原生的底部悬浮控件、桌面小组件（整月 / 今日 / 课表）、系统精确闹钟提醒和后台同步，原生纪念相机。',
-      steps: ['下载 APK 并打开安装', '三星提示被拦截：先关「自动拦截器」，装完再打开', '以后在 设置 → 安卓 App 里检查更新，覆盖安装不丢数据'],
+      desc: '原生的底部悬浮控件、桌面小组件（整月 / 今日 / 课表 / 纪念日）、系统精确闹钟提醒和后台同步，原生纪念相机。',
+      steps: ['下载 APK 并打开安装', '以后在 设置 → 安卓 App 里检查更新，覆盖安装不丢数据'],
       main: { label: '下载 APK', href: REL + '/releases/latest/download/month-calendar.apk' },
       more: [{ label: '更新记录', href: REL + '/releases/latest' }]
     },
