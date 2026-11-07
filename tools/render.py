@@ -1,5 +1,6 @@
 # 把节律、月账本两页的示意图渲染成图片（img/ill/*.webp），页面里放图片，所有设备看到的一样。
 # 示意图的源码在 tools/ill-cadence.html、tools/ill-ledger.html；改了源码或 style.css 里的示意图样式后，
+# 每张图出 5 种语言 × 浅色 / 深色 × 各档宽度。
 # 先在 tools 外起一个本地服务（python3 -m http.server 8795），再运行：python3 tools/render.py
 import json, os, re, subprocess, sys, tempfile
 
@@ -9,8 +10,14 @@ OUT = os.path.join(ROOT, 'img', 'ill')
 CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 BASE = os.environ.get('SX_BASE', 'http://localhost:8795')
 H = 178                                  # 示意图的高度（CSS 像素）
-W = {'': 301, 'w2': 637, 'w3': 972}      # 电脑上三列布局时，单格 / 两格 / 整行的宽度
-NARROW = 323                             # 手机上一列时的宽度（宽卡片另出一张，单格直接用电脑那张）
+# 只渲染前景（透明底），背景色块由页面画；图片按原尺寸居中摆，卡片比它宽就多露一点背景。
+# 所以每一档都按这一档里卡片最窄的时候排版，保证任何窗口宽度下都不会被裁到。
+#   电脑（>860）：单格 240–299、两格 515–646、整行 791–970
+#   平板（560–860）：单格 228–377、两格 / 整行 491–790
+#   手机（≤560）：一列 266（320 宽的屏）–506，按 300 排，再窄的两边各裁一点背景
+W = {'': {'d': 232, 'p': 300}, 'w2': {'d': 491, 'p': 300}, 'w3': {'d': 791, 't': 491, 'p': 300}}
+LANGS = ('s', 't', 'en', 'fr', 'ja')      # 简体 · 繁體 · English · Français · 日本語（i18n.js 里的语言代号）
+MEDIA = {'p': '(max-width:560px)', 't': '(max-width:860px)'}
 
 
 def blocks(html):
@@ -44,25 +51,23 @@ def extract(page):
     return json.load(open(meta))
 
 
-def shoot(page, i, theme, width, out, mobile=False):
+def shoot(page, i, lang, theme, width, out, mobile=False):
     # 无界面 Chrome 的窗口至少 500 宽、高度还要扣掉一截：窗口开大，示意图按 width 排在左上角，截图后精确裁出来
     png = tempfile.mktemp(suffix='.png')
-    url = f'{BASE}/tools/render.html?page={page}&i={i}&theme={theme}&w={width}&m={1 if mobile else 0}'
-    subprocess.run([CHROME, '--headless=new', '--hide-scrollbars', '--force-device-scale-factor=2',
+    url = f'{BASE}/tools/render.html?page={page}&i={i}&lang={lang}&theme={theme}&w={width}&m={1 if mobile else 0}'
+    subprocess.run([CHROME, '--headless=new', '--hide-scrollbars', '--force-device-scale-factor=2', '--default-background-color=00000000',
                     f'--window-size={max(width, 1000)},{H + 600}', '--virtual-time-budget=2500', f'--screenshot={png}', url],
                    check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    subprocess.run(['cwebp', '-quiet', '-q', '86', '-crop', '0', '0', str(width * 2), str(H * 2), png, '-o', out], check=True)
+    subprocess.run(['cwebp', '-quiet', '-q', '86', '-alpha_q', '90', '-crop', '0', '0', str(width * 2), str(H * 2), png, '-o', out], check=True)
     os.remove(png)
 
 
 def img_html(page, i, size):
-    n = f'img/ill/{page}-{i}'
-    alt = ''
+    n = f'img/ill/{page}-{i}-s'
     def pic(theme, cls):
-        if size:   # 宽卡片：手机上换成窄的那张
-            return (f'<picture class="{cls}"><source media="(max-width:560px)" srcset="{n}-{theme}-n.webp">'
-                    f'<img src="{n}-{theme}-w.webp" alt="{alt}" loading="lazy" decoding="async"></picture>')
-        return f'<picture class="{cls}"><img src="{n}-{theme}-w.webp" alt="{alt}" loading="lazy" decoding="async"></picture>'
+        src = ''.join(f'<source media="{MEDIA[k]}" srcset="{n}-{theme}-{k}.webp 2x">' for k in ('p', 't') if k in W[size])
+        return (f'<picture class="{cls}">{src}<img srcset="{n}-{theme}-d.webp 2x" src="{n}-{theme}-d.webp" alt="" '
+                f'loading="lazy" decoding="async"></picture>')
     return f'<div class="ill ill-img" aria-hidden="true">{pic("light", "im-l")}{pic("dark", "im-d")}</div>'
 
 
@@ -71,17 +76,16 @@ def main():
     for page in ('cadence', 'ledger'):
         sizes = extract(page)
         for i, size in enumerate(sizes):
-            for theme in ('light', 'dark'):
-                shoot(page, i, theme, W[size], os.path.join(OUT, f'{page}-{i}-{theme}-w.webp'), mobile=not size)
-                if size:
-                    shoot(page, i, theme, NARROW, os.path.join(OUT, f'{page}-{i}-{theme}-n.webp'), mobile=True)
+            for lang in LANGS:
+                for theme in ('light', 'dark'):
+                    for k, w in W[size].items():
+                        shoot(page, i, lang, theme, w, os.path.join(OUT, f'{page}-{i}-{lang}-{theme}-{k}.webp'), mobile=k == 'p')
             print(page, i, size or '单格', '✓')
         # 页面里还是画出来的示意图，就换成图片
         p = os.path.join(ROOT, f'{page}.html')
         html = open(p, encoding='utf-8').read()
         for k, (size, a, b) in reversed(list(enumerate(blocks(html)))):
-            if 'ill-img' not in html[a:a + 40]:
-                html = html[:a] + img_html(page, k, size) + html[b:]
+            html = html[:a] + img_html(page, k, size) + html[b:]
         open(p, 'w', encoding='utf-8').write(html)
 
 

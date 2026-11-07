@@ -2,7 +2,8 @@
 (function () {
   var KEY = 'sx-theme', root = document.documentElement;
   root.classList.add('js');
-  var names = { auto: '外观：跟随系统', light: '外观：浅色', dark: '外观：深色' };
+  var T = window.sxT || function (x) { return x; };
+  var names = { auto: T('外观：跟随系统'), light: T('外观：浅色'), dark: T('外观：深色') };
   function get() { try { return localStorage.getItem(KEY) || 'auto'; } catch (e) { return 'auto'; } }
   function apply(t) {
     if (t === 'auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', t);
@@ -18,6 +19,20 @@
       try { localStorage.setItem(KEY, next); } catch (e) {}
       apply(next);
     });
+
+    // 语言：页脚外观按钮旁边放一个下拉，换了记在本机、重新载入
+    if (b && window.SX_LANGS) {
+      var lab = document.createElement('label');
+      lab.className = 'theme lang';
+      var sel = document.createElement('select');
+      sel.setAttribute('aria-label', T('语言'));
+      window.SX_LANGS.forEach(function (x) { var o = document.createElement('option'); o.value = x[0]; o.textContent = x[2]; sel.appendChild(o); });
+      sel.value = window.sxLang;
+      sel.addEventListener('change', function () { try { localStorage.setItem('sx-lang', sel.value); } catch (e) {} location.reload(); });
+      lab.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.7 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.7-3.8-9S9.4 5.6 12 3Z"/></svg>';
+      lab.appendChild(sel);
+      b.insertAdjacentElement('afterend', lab);
+    }
 
     // 顶栏：滚下去才显示毛玻璃
     function onScroll() { root.classList.toggle('scrolled', scrollY > 8); }
@@ -113,7 +128,7 @@
       if (document.getElementById('sxUpdate')) return;
       var b = document.createElement('button');
       b.id = 'sxUpdate'; b.type = 'button'; b.className = 'update-toast';
-      b.textContent = '网站已更新 · 点此刷新';
+      b.textContent = T('网站已更新 · 点此刷新');
       b.addEventListener('click', function () { location.reload(); });
       document.body.appendChild(b);
       requestAnimationFrame(function () { b.classList.add('show'); });
@@ -145,31 +160,15 @@
       var old = document.getElementById('sxMail'); if (old) old.remove();
       var t = document.createElement('div');
       t.id = 'sxMail'; t.className = 'mail-toast'; t.setAttribute('role', 'status');
-      t.innerHTML = '<span>邮箱已复制：<b></b></span><a href="mailto:' + mail + '">用邮件 App 写信</a>';
+      t.innerHTML = '<span>' + T('邮箱已复制：') + '<b></b></span><a href="mailto:' + mail + '">' + T('用邮件 App 写信') + '</a>';
       t.querySelector('b').textContent = mail;
       document.body.appendChild(t);
       requestAnimationFrame(function () { t.classList.add('show'); });
-      var copied = function () {}, fail = function () { t.querySelector('span').firstChild.textContent = '联系邮箱：'; };
+      var copied = function () {}, fail = function () { t.querySelector('span').firstChild.textContent = T('联系邮箱：'); };
       if (navigator.clipboard) navigator.clipboard.writeText(mail).then(copied, fail); else fail();
       clearTimeout(window.__sxMailT);
       window.__sxMailT = setTimeout(function () { t.classList.remove('show'); setTimeout(function () { t.remove(); }, 400); }, 6000);
     });
-
-    // 液态玻璃的边缘折射：中间不动，靠近四边时把背后的画面往外拉，像透过透镜看（SVG 位移滤镜）。
-    // 只有 Chrome / Edge / 安卓 Chrome 能把它用在 backdrop-filter 上；Safari（含 iPhone 上所有浏览器）不支持，保留清透 + 高光
-    var ua = navigator.userAgent || '';
-    if (/Chrome\/\d/.test(ua) && !/iPhone|iPad|iPod/.test(ua) && window.CSS && CSS.supports('backdrop-filter', 'url(#sxLens)') && document.querySelector('.ill')) {
-      var map = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><defs>" +
-        "<linearGradient id='r' x1='0' x2='1'><stop offset='0' stop-color='#000'/><stop offset='.2' stop-color='#800000'/><stop offset='.8' stop-color='#800000'/><stop offset='1' stop-color='#f00'/></linearGradient>" +
-        "<linearGradient id='g' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#000'/><stop offset='.24' stop-color='#008000'/><stop offset='.76' stop-color='#008000'/><stop offset='1' stop-color='#0f0'/></linearGradient></defs>" +
-        "<rect width='100' height='100' fill='url(#r)'/><rect width='100' height='100' fill='url(#g)' style='mix-blend-mode:screen'/></svg>";
-      var box = document.createElement('div');
-      box.innerHTML = '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="sxLens" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB" primitiveUnits="objectBoundingBox">' +
-        '<feImage href="data:image/svg+xml,' + encodeURIComponent(map) + '" x="0" y="0" width="1" height="1" preserveAspectRatio="none" result="map"/>' +
-        '<feDisplacementMap in="SourceGraphic" in2="map" scale=".06" xChannelSelector="R" yChannelSelector="G"/></filter></svg>';
-      document.body.appendChild(box.firstChild);
-      root.classList.add('lens');
-    }
 
     // 跟随鼠标的光晕
     [].forEach.call(document.querySelectorAll('.spot'), function (el) {

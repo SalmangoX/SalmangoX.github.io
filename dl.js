@@ -53,37 +53,38 @@
     if (/Macintosh|Mac OS X/.test(ua)) return 'mac';
     return 'web';
   }
+  var T = window.sxT || function (x) { return x; };
   var mine = detect(), cur = mine;
 
   function svg(k) {
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICON[k] + '</svg>';
   }
   function badge(k) {
-    if (k !== mine) return '<span class="dl-badge sel">你选择的版本</span>';
+    if (k !== mine) return '<span class="dl-badge sel">' + T('你选择的版本') + '</span>';
     var dev = DEV[k];
-    return '<span class="dl-badge">' + (dev ? '为你推荐 · 你在用 ' + dev : '为你推荐') + '</span>';
+    return '<span class="dl-badge">' + (dev ? T('为你推荐 · 你在用') + ' ' + T(dev) : T('为你推荐')) + '</span>';
   }
   function btn(b, cls) {
-    if (b.copy) return '<button type="button" class="btn ' + cls + '" data-copy="' + b.copy + '">' + b.label + '</button>';
-    return '<a class="btn ' + cls + '" href="' + b.href + '">' + b.label + '</a>';
+    if (b.copy) return '<button type="button" class="btn ' + cls + '" data-copy="' + b.copy + '">' + T(b.label) + '</button>';
+    return '<a class="btn ' + cls + '" href="' + b.href + '">' + T(b.label) + '</a>';
   }
   function main(k) {
     var p = P[k];
     return '<div class="dl-glow" aria-hidden="true"></div>' +
       '<div class="dl-top"><div class="dl-tile dl-' + k + '">' + svg(k) + '</div>' +
-      '<div class="dl-name">' + badge(k) + '<h3>' + p.name + '</h3>' +
-      '<div class="dl-meta"><span>' + p.req + '</span>' + (p.size ? '<span>' + p.size + '</span>' : '') + (VER ? '<span>' + VER + '</span>' : '') + '</div></div></div>' +
-      '<p class="dl-desc">' + p.desc + '</p>' +
-      '<ol class="dl-steps">' + p.steps.map(function (t, i) { return '<li><b>' + (i + 1) + '</b><span>' + t + '</span></li>'; }).join('') + '</ol>' +
+      '<div class="dl-name">' + badge(k) + '<h3>' + T(p.name) + '</h3>' +
+      '<div class="dl-meta"><span>' + T(p.req) + '</span>' + (p.size ? '<span>' + T(p.size) + '</span>' : '') + (VER ? '<span>' + T(VER) + '</span>' : '') + '</div></div></div>' +
+      '<p class="dl-desc">' + T(p.desc) + '</p>' +
+      '<ol class="dl-steps">' + p.steps.map(function (t, i) { return '<li><b>' + (i + 1) + '</b><span>' + T(t) + '</span></li>'; }).join('') + '</ol>' +
       '<div class="btns">' + btn(p.main, 'tint') + p.more.map(function (b) { return btn(b, 'ghost'); }).join('') +
-      (k !== mine ? '<button type="button" class="dl-back" data-pick="' + mine + '">回到推荐</button>' : '') + '</div>';
+      (k !== mine ? '<button type="button" class="dl-back" data-pick="' + mine + '">' + T('回到推荐') + '</button>' : '') + '</div>';
   }
   function list() {
     return ORDER.filter(function (k) { return k !== cur; }).map(function (k) {
       var p = P[k];
       return '<button type="button" class="dl-item" data-pick="' + k + '">' +
         '<span class="dl-tile sm dl-' + k + '">' + svg(k) + '</span>' +
-        '<span class="dl-it"><b>' + p.name + (k === mine ? '<i>推荐</i>' : '') + '</b><small>' + p.req + (p.size ? ' · ' + p.size : '') + '</small></span>' +
+        '<span class="dl-it"><b>' + T(p.name) + (k === mine ? '<i>' + T('推荐') + '</i>' : '') + '</b><small>' + T(p.req) + (p.size ? ' · ' + T(p.size) : '') + '</small></span>' +
         '<span class="dl-go" aria-hidden="true">›</span></button>';
     }).join('');
   }
@@ -113,9 +114,9 @@
       var cp = e.target.closest('[data-copy]');
       if (cp) {
         var text = cp.getAttribute('data-copy'), old = cp.textContent;
-        var done = function () { cp.textContent = '已复制'; setTimeout(function () { cp.textContent = old; }, 1600); };
-        if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, function () { prompt('复制这个地址：', text); });
-        else prompt('复制这个地址：', text);
+        var done = function () { cp.textContent = T('已复制'); setTimeout(function () { cp.textContent = old; }, 1600); };
+        if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, function () { prompt(T('复制这个地址：'), text); });
+        else prompt(T('复制这个地址：'), text);
       }
     });
   });
