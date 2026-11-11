@@ -286,15 +286,12 @@
   function pick() {
     try { var s = localStorage.getItem('sx-lang'); if (s && (COL[s] !== undefined || s === 's')) return s; } catch (e) {}
     var q = /[?&]lang=(\w+)/.exec(location.search); if (q && (COL[q[1]] !== undefined || q[1] === 's')) return q[1];
-    var ls = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || 'zh-CN'];
-    for (var i = 0; i < ls.length; i++) {
-      var l = String(ls[i]).toLowerCase();
-      if (/^zh-(tw|hk|mo)|hant/.test(l)) return 't';
-      if (/^zh/.test(l)) return 's';
-      if (/^ja/.test(l)) return 'ja';
-      if (/^fr/.test(l)) return 'fr';
-      if (/^en/.test(l)) return 'en';
-    }
+    // 访客用的是什么语言就显示什么（只看第一语言）；网站没有这种语言就用英语。
+    // 中文只有明确写了繁体（zh-Hant / 台湾 / 香港 / 澳门）才用繁体，其他中文一律简体
+    var l = String((navigator.languages && navigator.languages[0]) || navigator.language || '').toLowerCase();
+    if (/^zh/.test(l)) return /hant|^zh-(tw|hk|mo)\b/.test(l) && !/hans/.test(l) ? 't' : 's';
+    if (/^ja/.test(l)) return 'ja';
+    if (/^fr/.test(l)) return 'fr';
     return 'en';
   }
   var L = window.SX_LANG || pick(), c = COL[L];
